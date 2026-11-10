@@ -1,0 +1,36 @@
+[project]
+name = "triage"
+version = "0.1.0"
+description = "A support triage agent with the evaluations that show when to trust it."
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=1.4.10",
+    "langchain-anthropic>=1.7.10",
+    "langgraph>=1.2.20",
+    "langsmith>=0.14.17",
+    "python-dotenv>=1.2.4",
+    "rank-bm25>=0.2.2",
+]
+
+[project.scripts]
+triage = "triage.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.32,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.4",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 130
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B"]

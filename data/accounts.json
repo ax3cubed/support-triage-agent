@@ -1,0 +1,88 @@
+[
+  {
+    "email": "alice@brightbakery.example",
+    "name": "Alice Carter",
+    "business": "Bright Bakery",
+    "role": "owner",
+    "plan": "pro",
+    "billing_cycle": "monthly",
+    "subscription_status": "active",
+    "two_factor_enabled": true,
+    "recent_charges": [
+      {"date": "2026-11-02", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
+      {"date": "2026-11-02", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
+      {"date": "2026-10-02", "amount": "£15", "status": "paid", "description": "Pro monthly, October"}
+    ]
+  },
+  {
+    "email": "tom@brightbakery.example",
+    "name": "Tom Bennett",
+    "business": "Bright Bakery",
+    "role": "member",
+    "plan": "pro",
+    "billing_cycle": "monthly",
+    "subscription_status": "active",
+    "two_factor_enabled": false,
+    "recent_charges": "hidden: only the owner can see billing"
+  },
+  {
+    "email": "charles@northwindlogistics.example",
+    "name": "Charles Evans",
+    "business": "Northwind Logistics",
+    "role": "owner",
+    "plan": "pro",
+    "billing_cycle": "yearly",
+    "subscription_status": "active",
+    "two_factor_enabled": true,
+    "recent_charges": [
+      {"date": "2026-11-04", "amount": "£150", "status": "paid", "description": "Pro yearly"}
+    ]
+  },
+  {
+    "email": "mary@kestrelstudio.example",
+    "name": "Mary Sutton",
+    "business": "Kestrel Studio",
+    "role": "owner",
+    "plan": "free",
+    "billing_cycle": null,
+    "subscription_status": "none",
+    "two_factor_enabled": false,
+    "recent_charges": []
+  },
+  {
+    "email": "frank@greenleaf.example",
+    "name": "Frank Adams",
+    "business": "Greenleaf Farms",
+    "role": "owner",
+    "plan": "free",
+    "billing_cycle": "monthly",
+    "subscription_status": "past_due",
+    "two_factor_enabled": false,
+    "recent_charges": [
+      {"date": "2026-11-01", "amount": "£15", "status": "failed", "description": "Pro monthly, November (3 retries failed)"},
+      {"date": "2026-10-01", "amount": "£15", "status": "paid", "description": "Pro monthly, October"}
+    ]
+  },
+  {
+    "email": "grace@greenleaf.example",
+    "name": "Grace Newman",
+    "business": "Greenleaf Farms",
+    "role": "viewer",
+    "plan": "free",
+    "billing_cycle": "monthly",
+    "subscription_status": "past_due",
+    "two_factor_enabled": false,
+    "recent_charges": "hidden: only the owner can see billing"
+  },
+  {
+    "email": "sophie@trialco.example",
+    "name": "Sophie Martin",
+    "business": "TrialCo Designs",
+    "role": "owner",
+    "plan": "pro",
+    "billing_cycle": null,
+    "subscription_status": "trial",
+    "two_factor_enabled": false,
+    "recent_charges": []
+  }
+]
