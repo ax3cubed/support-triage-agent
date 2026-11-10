@@ -60,7 +60,8 @@ class Verdict(BaseModel):
 
 @lru_cache(maxsize=1)
 def _judge():
-    return init_chat_model(JUDGE_MODEL).with_structured_output(Verdict)
+    # json_schema, not the default forced tool call, which the newest Claude models do not support.
+    return init_chat_model(JUDGE_MODEL).with_structured_output(Verdict, method="json_schema")
 
 
 def judge_reply(inputs: dict, outputs: dict) -> Verdict:
@@ -75,12 +76,18 @@ def judge_reply(inputs: dict, outputs: dict) -> Verdict:
     return _judge().invoke(prompt)
 
 
-def reply_judge(inputs: dict, outputs: dict) -> list[dict]:
-    """LangSmith evaluator: grounded and helpful, for replies only."""
+def reply_judge(inputs: dict, outputs: dict) -> dict:
+    """LangSmith evaluator: grounded and helpful, for replies only.
+
+    Returns the `{"results": [...]}` form because LangSmith rejects a bare empty list, which is what
+    an escalation or a question would otherwise produce.
+    """
     if outputs["action"] != "reply":
-        return []
+        return {"results": []}
     verdict = judge_reply(inputs, outputs)
-    return [
-        {"key": "grounded", "score": int(verdict.grounded), "comment": verdict.grounded_reasoning},
-        {"key": "helpful", "score": int(verdict.helpful), "comment": verdict.helpful_reasoning},
-    ]
+    return {
+        "results": [
+            {"key": "grounded", "score": int(verdict.grounded), "comment": verdict.grounded_reasoning},
+            {"key": "helpful", "score": int(verdict.helpful), "comment": verdict.helpful_reasoning},
+        ]
+    }
