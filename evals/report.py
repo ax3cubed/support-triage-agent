@@ -22,6 +22,7 @@ METRICS = [
     "team_correct",
     "priority_correct",
     "retrieval_hit",
+    "retrieval_section_hit",
     "citations_valid",
     "cited_expected_doc",
     "account_lookup",

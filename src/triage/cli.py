@@ -29,7 +29,7 @@ def main() -> None:
             for name in update.get("tool_calls", []):
                 print(f"  [{node}] {name}")
             for key, value in update.items():
-                if key in ("retrieved", "tool_calls", "messages"):
+                if key in ("retrieved", "searches", "tool_calls", "messages"):
                     state[key] = state.get(key, []) + value
                 else:
                     state[key] = value

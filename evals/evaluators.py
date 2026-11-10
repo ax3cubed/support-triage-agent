@@ -54,6 +54,13 @@ def retrieval_hit(outputs: dict, expected: dict) -> int | None:
     return int(bool(set(expected["docs"]) & set(outputs["retrieved_doc_ids"])))
 
 
+def retrieval_section_hit(outputs: dict, expected: dict) -> int | None:
+    """Stricter than retrieval_hit: did a search return the section that holds the answer, not just its article?"""
+    if "sections" not in expected:
+        return None
+    return int(bool(set(expected["sections"]) & set(outputs["retrieved_sections"])))
+
+
 def citations_valid(outputs: dict, expected: dict) -> int | None:
     """A reply must cite at least one article, and only articles a search actually returned."""
     if outputs["action"] != "reply" or "docs" not in expected:
@@ -109,6 +116,7 @@ CHECKS = [
     team_correct,
     priority_correct,
     retrieval_hit,
+    retrieval_section_hit,
     citations_valid,
     cited_expected_doc,
     account_lookup,

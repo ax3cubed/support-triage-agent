@@ -52,6 +52,11 @@ def doc_ids() -> set[str]:
     return {chunk.doc_id for chunk in _index()[0]}
 
 
+def section_ids() -> set[str]:
+    """Every section in the help centre, as `doc_id#Section heading`."""
+    return {f"{chunk.doc_id}#{chunk.section}" for chunk in _index()[0]}
+
+
 def search(query: str, k: int = 4) -> list[Chunk]:
     """Return the k sections that best match the query, best first. Sections with no shared words are left out."""
     chunks, bm25 = _index()

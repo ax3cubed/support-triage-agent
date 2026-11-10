@@ -91,6 +91,7 @@ class TriageState(TypedDict, total=False):
     ticket: Ticket
     messages: Annotated[list[AnyMessage], add_messages]
     retrieved: Annotated[list[dict], operator.add]
+    searches: Annotated[list[dict], operator.add]
     tool_calls: Annotated[list[str], operator.add]
     redactions: int
     model_calls: int
@@ -117,13 +118,16 @@ def build_graph(model: BaseChatModel | None = None, prompt_version: str = "v0"):
         return {"messages": [llm.invoke(state["messages"])], "model_calls": state["model_calls"] + 1}
 
     def run_tools(state: TriageState) -> dict:
-        update: dict = {"messages": [], "retrieved": [], "tool_calls": []}
+        update: dict = {"messages": [], "retrieved": [], "searches": [], "tool_calls": []}
         for call in state["messages"][-1].tool_calls:
             name, args = call["name"], call["args"]
             update["tool_calls"].append(name)
             if name == "search_help_center":
                 chunks = kb.search(args.get("query", ""))
                 update["retrieved"] += [{"doc_id": c.doc_id, "section": c.section, "text": c.text} for c in chunks]
+                update["searches"].append(
+                    {"query": args.get("query", ""), "sections": [f"{c.doc_id}#{c.section}" for c in chunks]}
+                )
                 result = kb.format_chunks(chunks)
             elif name == "lookup_account":
                 account = accounts.lookup(state["ticket"]["from_email"])
@@ -183,6 +187,8 @@ def summarise(state: TriageState) -> dict:
         "message": decision.get("body") or decision.get("summary") or decision.get("question") or "",
         "cited_doc_ids": decision.get("cited_doc_ids", []),
         "retrieved_doc_ids": list(dict.fromkeys(chunk["doc_id"] for chunk in retrieved)),
+        "retrieved_sections": list(dict.fromkeys(f"{chunk['doc_id']}#{chunk['section']}" for chunk in retrieved)),
+        "searches": state.get("searches", []),
         "retrieved_context": "\n\n".join(f"[{c['doc_id']}] {c['section']}\n{c['text']}" for c in retrieved),
         "tool_calls": state.get("tool_calls", []),
         "model_calls": state.get("model_calls", 0),

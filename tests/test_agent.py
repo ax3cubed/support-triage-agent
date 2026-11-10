@@ -17,6 +17,8 @@ def test_search_then_reply_records_the_trajectory():
     assert result["action"] == "reply"
     assert result["tool_calls"] == ["search_help_center", "lookup_account", "send_reply"]
     assert "reminders" in result["retrieved_doc_ids"]
+    assert result["searches"][0]["query"] == "automatic reminders"
+    assert "reminders#Turn reminders on" in result["retrieved_sections"]
     assert result["cited_doc_ids"] == ["reminders"]
     assert not result["gave_up"]
 

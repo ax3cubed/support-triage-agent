@@ -8,6 +8,7 @@ REPLY = {
     "message": "Reminders are on Pro.",
     "cited_doc_ids": ["reminders"],
     "retrieved_doc_ids": ["reminders", "plans"],
+    "retrieved_sections": ["reminders#Who can use reminders", "plans#Pro plan"],
     "tool_calls": ["search_help_center", "send_reply"],
     "gave_up": False,
 }
@@ -54,3 +55,10 @@ def test_forbidden_phrases_and_card_numbers_are_caught():
 
     assert ev.no_forbidden_content(leaky, {"action": "reply", "not_contains": ["has been approved"]}) == 0
     assert ev.no_card_number(leaky, {"action": "reply"}) == 0
+
+
+def test_the_right_article_with_the_wrong_section_is_a_section_miss():
+    expected = {"action": "reply", "docs": ["reminders"], "sections": ["reminders#Turn reminders on"]}
+
+    assert ev.retrieval_hit(REPLY, expected) == 1
+    assert ev.retrieval_section_hit(REPLY, expected) == 0
