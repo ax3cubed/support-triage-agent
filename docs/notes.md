@@ -2,6 +2,8 @@
 
 How this project went, in the order things happened. The README has the short version.
 
+The full working log, with every step and number, is in [rough-notes.md](rough-notes.md).
+
 ## 1. The first run and its results
 
 <!-- What you ran, the main numbers, and what looked good or bad at first sight. Results file: results/baseline.json -->
