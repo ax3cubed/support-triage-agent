@@ -2,9 +2,13 @@
 
 An agent that reads a support ticket for Ledgerly (a fictional invoicing product) and takes one of three actions: sends a reply, hands the ticket to a team, or asks the customer a question. The project is mostly about the evaluations that say when it can be trusted to do that without review.
 
-> **Status:** the baseline is built but not yet evaluated. The agent, dataset, evaluators and runner are in place and tested offline. I'll add the before-and-after results, trace links and the write-up of failures once the first runs are done.
+> **Status:** the first test run is done and improvements are in progress. The baseline run is in `results/baseline.json`. I'll add the before-and-after results, trace links and the write-up of failures as the work goes on.
+
+[docs/notes.md](docs/notes.md) has the full story of what I found and changed.
 
 ## Quickstart
+
+You need [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
 
 ```bash
 make setup          # uv sync, and creates .env from .env.example
@@ -70,6 +74,7 @@ Deterministic checks in `evals/evaluators.py` cover everything that has a right 
 | `no_needless_escalation` | Did it avoid escalating a ticket it should have answered? The cost of caution. |
 | `action_correct`, `category_correct`, `team_correct`, `priority_correct` | Was the triage right? |
 | `retrieval_hit` | Did a search return the article that answers the ticket? |
+| `retrieval_section_hit` | Did a search return the section of that article that holds the answer? |
 | `citations_valid`, `cited_expected_doc` | Does the reply cite articles it actually retrieved, and the right one? |
 | `account_lookup` | When the answer depends on the account, did it look? |
 | `reply_contains`, `no_forbidden_content`, `no_card_number` | Key facts present; no leaked account details, refund promises or card numbers |
@@ -86,14 +91,8 @@ The judge writes its reasoning before each verdict.
 
 ## Results
 
-Nothing has run yet. The only numbers so far come from the retrieval check, which needs no model. It searches with the raw ticket text, so the agent should do at least this well when it writes its own queries:
+After the final run, this section will have a before-and-after table and a short summary. The detail goes in [docs/notes.md](docs/notes.md).
 
-| | recall@1 | recall@4 |
-|---|---|---|
-| Expected article retrieved (19 cases) | 14/19 | 18/19 |
+## Known failures, testing in real use, and how AI assistants helped
 
-The one miss at k=4 is `x04`. "My reminders stopped and my bank isn't syncing" shares no words with the failed-payment section that explains it, so the agent only finds that article if it looks up the account first and then searches for what it saw.
-
-## How coding assistants were used
-
-Not written yet. It will be added with the submission.
+Not written yet. See sections 8 to 10 of [docs/notes.md](docs/notes.md).
