@@ -12,6 +12,7 @@ def main() -> None:
     parser.add_argument("body", nargs="?", help="The ticket text.")
     parser.add_argument("--from", dest="from_email", default="alice@brightbakery.example")
     parser.add_argument("--subject", default="(no subject)")
+    parser.add_argument("--agent", default="v0", help="Agent version: v0 or v1.")
     parser.add_argument("--case", help="Run a case from the evaluation dataset by id, e.g. e02.")
     args = parser.parse_args()
 
@@ -24,7 +25,7 @@ def main() -> None:
         parser.error("give a ticket body or --case")
 
     state: dict = {"ticket": ticket}
-    for step in build_graph().stream(state, stream_mode="updates"):
+    for step in build_graph(version=args.agent).stream(state, stream_mode="updates"):
         for node, update in step.items():
             for name in update.get("tool_calls", []):
                 print(f"  [{node}] {name}")

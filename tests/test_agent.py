@@ -61,3 +61,46 @@ def test_searching_forever_hands_the_ticket_to_a_human():
     result = triage(ALICE, model=model)
 
     assert result["gave_up"] and result["model_calls"] == MAX_MODEL_CALLS
+
+
+DANIEL = {"from_email": "daniel@harbourprint.example", "subject": "Reminders", "body": "How do I stop reminders for one client?"}
+REPLY_CALL = ("send_reply", {"category": "product", "body": "Open the client and choose Edit.", "cited_doc_ids": []})
+
+
+def test_v0_account_lookup_shows_the_model_every_charge():
+    model = ScriptedModel([("lookup_account", {})], [REPLY_CALL])
+
+    result = triage(DANIEL, model=model, version="v0")
+
+    assert "£15" in model.seen[1][-1].content
+    assert result["saw_charges"]
+
+
+def test_v1_account_lookup_returns_the_basics_without_charges():
+    model = ScriptedModel([("lookup_account", {})], [REPLY_CALL])
+
+    result = triage(DANIEL, model=model, version="v1")
+
+    shown = model.seen[1][-1].content
+    assert "Harbour Print" in shown and "owner" in shown
+    assert "£15" not in shown and "recent_charges" not in shown
+    assert not result["saw_charges"]
+
+
+def test_v1_charges_need_their_own_tool_call():
+    model = ScriptedModel([("get_recent_charges", {})], [REPLY_CALL])
+
+    result = triage(DANIEL, model=model, version="v1")
+
+    assert "£15" in model.seen[1][-1].content
+    assert result["saw_charges"]
+
+
+def test_v1_does_not_show_charges_to_someone_who_is_not_the_owner():
+    member = {**DANIEL, "from_email": "tom@brightbakery.example"}
+    model = ScriptedModel([("get_recent_charges", {})], [REPLY_CALL])
+
+    result = triage(member, model=model, version="v1")
+
+    assert "only the owner" in model.seen[1][-1].content
+    assert not result["saw_charges"]

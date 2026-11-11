@@ -1,6 +1,6 @@
 """Run the agent over the dataset, score it, and save a results file that `evals.report` can compare.
 
-uv run python -m evals.run --name baseline            # LangSmith experiment + results/baseline.json
+uv run python -m evals.run --name baseline --agent v0 # LangSmith experiment + results/baseline.json
 uv run python -m evals.run --name baseline --local    # no upload; needs only a model key
 """
 
@@ -55,7 +55,7 @@ def summarise(rows: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate the triage agent.")
     parser.add_argument("--name", required=True, help="Experiment name, e.g. baseline or v1.")
-    parser.add_argument("--prompt", default="v0", help="Prompt version from triage.prompts.")
+    parser.add_argument("--agent", default="v0", help="Agent version to test: v0 or v1.")
     parser.add_argument("--local", action="store_true", help="Do not upload the dataset or results to LangSmith.")
     parser.add_argument("--no-judge", action="store_true", help="Skip the LLM judge (deterministic checks only).")
     parser.add_argument("--repetitions", type=int, default=1, help="Run each case this many times to see variance.")
@@ -69,11 +69,11 @@ def main() -> None:
         data = sync_to_langsmith(Client(), cases)
 
     experiment = evaluate(
-        lambda inputs: triage(inputs, prompt_version=args.prompt),
+        lambda inputs: triage(inputs, version=args.agent),
         data=data,
         evaluators=[deterministic_checks] if args.no_judge else [deterministic_checks, reply_judge],
         experiment_prefix=args.name,
-        metadata={"prompt": args.prompt, "agent_model": AGENT_MODEL, "judge_model": JUDGE_MODEL},
+        metadata={"agent_version": args.agent, "agent_model": AGENT_MODEL, "judge_model": JUDGE_MODEL},
         num_repetitions=args.repetitions,
         max_concurrency=4,
         upload_results=not (args.local or args.only),
@@ -82,7 +82,7 @@ def main() -> None:
     rows = collect_rows(experiment)
     record = {
         "name": args.name,
-        "prompt": args.prompt,
+        "agent_version": args.agent,
         "agent_model": AGENT_MODEL,
         "judge_model": None if args.no_judge else JUDGE_MODEL,
         "experiment": getattr(experiment, "experiment_name", None),

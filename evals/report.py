@@ -26,6 +26,8 @@ METRICS = [
     "citations_valid",
     "cited_expected_doc",
     "account_lookup",
+    "charges_when_needed",
+    "no_needless_charge_data",
     "reply_contains",
     "reached_decision",
 ]

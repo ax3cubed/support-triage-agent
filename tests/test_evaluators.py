@@ -10,6 +10,7 @@ REPLY = {
     "retrieved_doc_ids": ["reminders", "plans"],
     "retrieved_sections": ["reminders#Who can use reminders", "plans#Pro plan"],
     "tool_calls": ["search_help_center", "send_reply"],
+    "saw_charges": False,
     "gave_up": False,
 }
 ESCALATION = {**REPLY, "action": "escalate", "team": "billing", "priority": "normal", "cited_doc_ids": []}
@@ -62,3 +63,12 @@ def test_the_right_article_with_the_wrong_section_is_a_section_miss():
 
     assert ev.retrieval_hit(REPLY, expected) == 1
     assert ev.retrieval_section_hit(REPLY, expected) == 0
+
+
+def test_seeing_charges_on_a_ticket_that_is_not_about_charges_fails():
+    peeked = {**REPLY, "saw_charges": True}
+
+    assert ev.no_needless_charge_data(REPLY, {"action": "reply", "charges": False}) == 1
+    assert ev.no_needless_charge_data(peeked, {"action": "reply", "charges": False}) == 0
+    assert ev.charges_when_needed(REPLY, {"action": "escalate", "charges": True}) == 0
+    assert ev.no_needless_charge_data(peeked, {"action": "reply"}) is None

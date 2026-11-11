@@ -10,8 +10,22 @@
     "two_factor_enabled": true,
     "recent_charges": [
       {"date": "2026-11-02", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
-      {"date": "2026-11-02", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
       {"date": "2026-10-02", "amount": "£15", "status": "paid", "description": "Pro monthly, October"}
+    ]
+  },
+  {
+    "email": "daniel@harbourprint.example",
+    "name": "Daniel Price",
+    "business": "Harbour Print",
+    "role": "owner",
+    "plan": "pro",
+    "billing_cycle": "monthly",
+    "subscription_status": "active",
+    "two_factor_enabled": true,
+    "recent_charges": [
+      {"date": "2026-11-03", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
+      {"date": "2026-11-03", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
+      {"date": "2026-10-03", "amount": "£15", "status": "paid", "description": "Pro monthly, October"}
     ]
   },
   {

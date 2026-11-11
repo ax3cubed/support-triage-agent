@@ -15,6 +15,7 @@ from typing import Annotated, Literal, TypedDict
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, AnyMessage, HumanMessage, SystemMessage, ToolMessage
+from langchain_core.utils.function_calling import convert_to_openai_tool
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
 from pydantic import BaseModel, Field
@@ -48,6 +49,13 @@ class lookup_account(BaseModel):  # noqa: N801
     """
 
 
+class get_recent_charges(BaseModel):  # noqa: N801
+    """Get the recent subscription charges on the sender's own Ledgerly account.
+
+    Takes no arguments. Use it only when the ticket is about a charge, a payment to Ledgerly or a refund.
+    """
+
+
 class send_reply(BaseModel):  # noqa: N801
     """Finish by sending this reply to the person. It is sent as written, with no human review."""
 
@@ -77,6 +85,23 @@ ACTION_TOOLS = [send_reply, escalate_to_human, ask_customer]
 ACTION_NAMES = {"send_reply": "reply", "escalate_to_human": "escalate", "ask_customer": "ask_customer"}
 
 
+# What each agent version can see. In v0 one lookup returns the whole account, charges included.
+# From v1 the lookup returns the basics only and charges need their own, deliberate tool call.
+SPLIT_BILLING = {"v0": False, "v1": True}
+
+
+def tools_for(version: str) -> list:
+    """The tools offered to the model in this agent version."""
+    if not SPLIT_BILLING[version]:
+        return [*LOOKUP_TOOLS, *ACTION_TOOLS]
+    basics = convert_to_openai_tool(lookup_account)
+    basics["function"]["description"] = (
+        "Look up the Ledgerly account of the person who sent this ticket: name, business, role, plan and "
+        "subscription status. Takes no arguments. It only ever returns the sender's own account, and never charges."
+    )
+    return [search_help_center, basics, get_recent_charges, *ACTION_TOOLS]
+
+
 class Ticket(TypedDict):
     """An incoming support request."""
 
@@ -93,15 +118,17 @@ class TriageState(TypedDict, total=False):
     retrieved: Annotated[list[dict], operator.add]
     searches: Annotated[list[dict], operator.add]
     tool_calls: Annotated[list[str], operator.add]
+    saw_charges: bool
     redactions: int
     model_calls: int
     decision: dict
 
 
-def build_graph(model: BaseChatModel | None = None, prompt_version: str = "v0"):
-    """Compile the agent. Pass a model to override the configured one (tests pass a scripted model)."""
-    llm = (model or init_chat_model(AGENT_MODEL)).bind_tools(LOOKUP_TOOLS + ACTION_TOOLS)
-    system_prompt = PROMPTS[prompt_version]
+def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
+    """Compile one version of the agent. Pass a model to override the configured one (tests pass a scripted model)."""
+    llm = (model or init_chat_model(AGENT_MODEL)).bind_tools(tools_for(version))
+    system_prompt = PROMPTS[version]
+    split_billing = SPLIT_BILLING[version]
 
     def redact_ticket(state: TriageState) -> dict:
         ticket = state["ticket"]
@@ -129,9 +156,20 @@ def build_graph(model: BaseChatModel | None = None, prompt_version: str = "v0"):
                     {"query": args.get("query", ""), "sections": [f"{c.doc_id}#{c.section}" for c in chunks]}
                 )
                 result = kb.format_chunks(chunks)
-            elif name == "lookup_account":
+            elif name == "lookup_account" or (name == "get_recent_charges" and split_billing):
                 account = accounts.lookup(state["ticket"]["from_email"])
-                result = json.dumps(account, ensure_ascii=False) if account else "No Ledgerly account uses the sender's email."
+                shows_charges = name == "get_recent_charges" or not split_billing
+                if not account:
+                    result = "No Ledgerly account uses the sender's email."
+                elif name == "get_recent_charges":
+                    result = json.dumps(account["recent_charges"], ensure_ascii=False)
+                elif split_billing:
+                    result = json.dumps({k: v for k, v in account.items() if k != "recent_charges"}, ensure_ascii=False)
+                else:
+                    result = json.dumps(account, ensure_ascii=False)
+                # Non-owners have a refusal string in place of charge rows, so they have seen no charges.
+                if account and shows_charges and isinstance(account["recent_charges"], list):
+                    update["saw_charges"] = True
             elif name in ACTION_NAMES:
                 if "decision" not in update:
                     update["decision"] = {"action": ACTION_NAMES[name], **args}
@@ -191,14 +229,15 @@ def summarise(state: TriageState) -> dict:
         "searches": state.get("searches", []),
         "retrieved_context": "\n\n".join(f"[{c['doc_id']}] {c['section']}\n{c['text']}" for c in retrieved),
         "tool_calls": state.get("tool_calls", []),
+        "saw_charges": state.get("saw_charges", False),
         "model_calls": state.get("model_calls", 0),
         "redactions": state.get("redactions", 0),
         "gave_up": decision.get("gave_up", False),
     }
 
 
-def triage(ticket: Ticket, model: BaseChatModel | None = None, prompt_version: str = "v0") -> dict:
+def triage(ticket: Ticket, model: BaseChatModel | None = None, version: str = "v0") -> dict:
     """Run one ticket through the agent and return its decision record."""
-    graph = build_graph(model, prompt_version)
-    state = graph.invoke({"ticket": ticket}, config={"run_name": "triage", "metadata": {"prompt_version": prompt_version}})
+    graph = build_graph(model, version)
+    state = graph.invoke({"ticket": ticket}, config={"run_name": "triage", "metadata": {"agent_version": version}})
     return summarise(state)

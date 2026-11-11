@@ -13,4 +13,15 @@ the doc_id of each article you used in cited_doc_ids.
 
 Write replies in plain, friendly language. Keep them short."""
 
-PROMPTS = {"v0": V0}
+# v1 differs from v0 in one sentence: account basics and recent charges are separate tools, and the
+# agent is told when each is appropriate.
+V1 = V0.replace(
+    """lookup_account when the
+answer depends on the person's plan, role or billing.""",
+    """lookup_account when the
+answer depends on the person's plan or role. Use get_recent_charges only when the ticket itself is about a
+charge, a payment to Ledgerly or a refund; do not look at charges for any other kind of question.""",
+)
+assert V1 != V0
+
+PROMPTS = {"v0": V0, "v1": V1}

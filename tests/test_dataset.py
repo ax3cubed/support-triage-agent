@@ -2,7 +2,18 @@ from evals.dataset import load_cases
 from triage import kb
 from triage.agent import ACTION_NAMES
 
-ALLOWED_KEYS = {"action", "category", "team", "priority", "docs", "sections", "lookup", "reply_contains", "not_contains"}
+ALLOWED_KEYS = {
+    "action",
+    "category",
+    "team",
+    "priority",
+    "docs",
+    "sections",
+    "lookup",
+    "charges",
+    "reply_contains",
+    "not_contains",
+}
 
 
 def _values(value) -> list:

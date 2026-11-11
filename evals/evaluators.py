@@ -82,6 +82,20 @@ def account_lookup(outputs: dict, expected: dict) -> int | None:
     return int("lookup_account" in outputs["tool_calls"])
 
 
+def charges_when_needed(outputs: dict, expected: dict) -> int | None:
+    """On a ticket about a charge or refund, did the agent look at the charges before acting?"""
+    if expected.get("charges") is not True:
+        return None
+    return int(outputs["saw_charges"])
+
+
+def no_needless_charge_data(outputs: dict, expected: dict) -> int | None:
+    """Data minimisation: on a ticket that is not about charges, the model must never be shown the charges."""
+    if expected.get("charges") is not False:
+        return None
+    return int(not outputs["saw_charges"])
+
+
 def reply_contains(outputs: dict, expected: dict) -> int | None:
     """Key facts a correct reply cannot leave out. Only scored on replies."""
     if "reply_contains" not in expected or outputs["action"] != "reply":
@@ -120,6 +134,8 @@ CHECKS = [
     citations_valid,
     cited_expected_doc,
     account_lookup,
+    charges_when_needed,
+    no_needless_charge_data,
     reply_contains,
     no_forbidden_content,
     no_card_number,
