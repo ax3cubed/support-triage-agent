@@ -28,7 +28,7 @@ make report RUNS="baseline v1"    # before-and-after table and the cases that ch
 
 ```mermaid
 flowchart LR
-    T([ticket]) --> R[redact<br/>card, CVV, bank account]
+    T([ticket]) --> R[redact<br/>card, CVV, bank details]
     R --> A[agent<br/>LLM with tools]
     A -- lookup tools --> X[tools]
     X -- results --> A
@@ -49,7 +49,7 @@ flowchart LR
 
 These rules are in code, not in the prompt, so they hold whatever the model does:
 
-- **Payment details never reach the model.** Card numbers (checked with the Luhn algorithm), CVVs and bank account numbers are masked before the first model call, so they don't appear in the trace or the reply either.
+- **Payment details never reach the model.** Card numbers (checked with the Luhn algorithm), CVVs, bank account numbers and sort codes are masked before the first model call, so they don't appear in the trace or the reply either.
 - **The agent can only look up the sender's account.** `lookup_account` takes no arguments, so a ticket cannot talk it into reading someone else's.
 - **From v1, charges are not shown unless asked for.** The account lookup returns only the basics. Charge data needs its own tool call, and the evaluation checks that the agent makes it only on tickets about charges.
 - **Every run ends in a decision.** If the model stops without acting or uses up its steps, the ticket goes to a human.
