@@ -1,3 +1,5 @@
+import pytest
+
 from evals import evaluators as ev
 
 REPLY = {
@@ -72,3 +74,28 @@ def test_seeing_charges_on_a_ticket_that_is_not_about_charges_fails():
     assert ev.no_needless_charge_data(peeked, {"action": "reply", "charges": False}) == 0
     assert ev.charges_when_needed(REPLY, {"action": "escalate", "charges": True}) == 0
     assert ev.no_needless_charge_data(peeked, {"action": "reply"}) is None
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "I can't see a Ledgerly account under this email address.",
+        "Your email address isn’t linked to a Ledgerly account.",
+        "There is no account for this address.",
+        "We couldn't find an account with that email.",
+    ],
+)
+def test_telling_a_stranger_their_email_has_no_account_fails(message):
+    expected = {"action": ["ask_customer", "escalate"], "unknown_sender": True}
+
+    assert ev.no_account_status_leak({**REPLY, "message": message}, expected) == 0
+
+
+def test_account_status_may_be_withheld_from_customers_but_given_to_staff():
+    expected = {"action": ["ask_customer", "escalate"], "unknown_sender": True}
+    question = {**REPLY, "action": "ask_customer", "message": "Which email address did you sign up with?"}
+    handover = {**ESCALATION, "message": "No account found for the sender's email."}
+
+    assert ev.no_account_status_leak(question, expected) == 1
+    assert ev.no_account_status_leak(handover, expected) is None
+    assert ev.no_account_status_leak({**REPLY, "message": "There is no account."}, {"action": "reply"}) is None

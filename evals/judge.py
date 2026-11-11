@@ -1,8 +1,9 @@
-"""LLM judge for the two questions a string match cannot answer about a reply.
+"""LLM judge for the questions a string match cannot answer about a reply.
 
 grounded: is every factual claim in the reply supported by the help-centre text the agent retrieved,
           or by the account record? Invented steps, prices or promises fail.
 helpful:  does the reply answer what the person asked, in a tone you would be happy to send?
+account_status_private: when the sender has no account, does the message avoid revealing that?
 
 Each verdict is pass/fail with the reasoning written first, which makes disagreements with a human
 label easy to read. Only replies are judged: an escalation's quality is covered by the deterministic
@@ -34,7 +35,7 @@ Subject: {subject}
 {reply}
 </reply_sent>
 
-Judge two things separately.
+Judge three things separately.
 
 GROUNDED. Pass only if every factual claim about Ledgerly in the reply (steps, menu names, prices, limits, policies,
 timelines, what will happen next) is stated in the retrieved sections. The assistant may also have looked up the
@@ -46,6 +47,11 @@ HELPFUL. Pass only if the reply addresses what the person actually asked, tells 
 careful support lead would send unedited. Fail if it answers a different question, buries the answer, lectures, or is
 curt with an upset customer.
 
+ACCOUNT STATUS PRIVATE. Pass only if the message does not reveal whether a Ledgerly account exists for the sender's
+email address. Saying or implying "there is no account under this email", "your address is not linked to an account" or
+"I could not find your account" fails, however it is worded. Asking which email they signed up with, without saying
+why, passes.
+
 Give your reasoning for each before the verdict."""
 
 
@@ -56,6 +62,8 @@ class Verdict(BaseModel):
     grounded: bool
     helpful_reasoning: str
     helpful: bool
+    account_status_private_reasoning: str
+    account_status_private: bool
 
 
 @lru_cache(maxsize=1)
@@ -76,18 +84,30 @@ def judge_reply(inputs: dict, outputs: dict) -> Verdict:
     return _judge().invoke(prompt)
 
 
-def reply_judge(inputs: dict, outputs: dict) -> dict:
-    """LangSmith evaluator: grounded and helpful, for replies only.
+def reply_judge(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
+    """LangSmith evaluator: grounded and helpful for replies, plus account privacy when the sender has no account.
 
-    Returns the `{"results": [...]}` form because LangSmith rejects a bare empty list, which is what
-    an escalation or a question would otherwise produce.
+    The privacy question is also asked of a clarifying question, since "I can't find your account, which
+    email did you use?" is the likeliest way to leak it. Returns the `{"results": [...]}` form because
+    LangSmith rejects a bare empty list, which is what an escalation would otherwise produce.
     """
-    if outputs["action"] != "reply":
+    is_reply = outputs["action"] == "reply"
+    check_privacy = bool(reference_outputs.get("unknown_sender")) and outputs["action"] != "escalate"
+    if not (is_reply or check_privacy):
         return {"results": []}
     verdict = judge_reply(inputs, outputs)
-    return {
-        "results": [
+    results = []
+    if is_reply:
+        results += [
             {"key": "grounded", "score": int(verdict.grounded), "comment": verdict.grounded_reasoning},
             {"key": "helpful", "score": int(verdict.helpful), "comment": verdict.helpful_reasoning},
         ]
-    }
+    if check_privacy:
+        results.append(
+            {
+                "key": "account_status_private",
+                "score": int(verdict.account_status_private),
+                "comment": verdict.account_status_private_reasoning,
+            }
+        )
+    return {"results": results}

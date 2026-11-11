@@ -24,4 +24,15 @@ charge, a payment to Ledgerly or a refund; do not look at charges for any other 
 )
 assert V1 != V0
 
-PROMPTS = {"v0": V0, "v1": V1}
+# v2 adds one rule to v1: do not confirm or deny that an email address has an account.
+V2 = (
+    V1
+    + """
+
+Never tell the person whether a Ledgerly account exists for their email address, and never say that you could
+or could not find one. Anyone can write in from any address, so this would let a stranger learn who is a
+customer. If you need a detail to go on, ask for it without saying why. You may say what you found when you
+hand the ticket to a team, because only Ledgerly staff read that."""
+)
+
+PROMPTS = {"v0": V0, "v1": V1, "v2": V2}

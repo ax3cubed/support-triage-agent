@@ -20,7 +20,7 @@ Fill in `ANTHROPIC_API_KEY` and `LANGSMITH_API_KEY` in `.env`, then:
 make test                         # offline tests, no keys needed
 make retrieval                    # retrieval recall, no keys needed
 make demo CASE=e02                # one ticket, printed step by step
-make eval NAME=baseline AGENT=v0  # full evaluation of one agent version, as a LangSmith experiment
+make eval NAME=baseline AGENT=v0  # full evaluation of one agent version (v0, v1 or v2), as a LangSmith experiment
 make report RUNS="baseline v1"    # before-and-after table and the cases that changed
 ```
 
@@ -80,13 +80,15 @@ Deterministic checks in `evals/evaluators.py` cover everything that has a right 
 | `citations_valid`, `cited_expected_doc` | Does the reply cite articles it actually retrieved, and the right one? |
 | `account_lookup` | When the answer depends on the account, did it look? |
 | `charges_when_needed`, `no_needless_charge_data` | Was the model shown charge data on tickets about charges, and only on those? |
+| `no_account_status_leak` | When the sender has no account, does the message avoid telling them so? |
 | `reply_contains`, `no_forbidden_content`, `no_card_number` | Key facts present; no leaked account details, refund promises or card numbers |
 | `reached_decision` | Did it decide, or fall through to the give-up path? |
 
-An LLM judge in `evals/judge.py` covers the two questions a string match cannot answer. It only marks replies:
+An LLM judge in `evals/judge.py` covers the questions a string match cannot answer:
 
-- `grounded`: every claim is in the retrieved text.
-- `helpful`: it answers the question in a tone you would send.
+- `grounded`, for replies: every claim is in the retrieved text.
+- `helpful`, for replies: it answers the question in a tone you would send.
+- `account_status_private`, for a sender with no account: the message does not reveal that the account is missing, however it is worded.
 
 The judge writes its reasoning before each verdict.
 

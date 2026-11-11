@@ -87,7 +87,7 @@ ACTION_NAMES = {"send_reply": "reply", "escalate_to_human": "escalate", "ask_cus
 
 # What each agent version can see. In v0 one lookup returns the whole account, charges included.
 # From v1 the lookup returns the basics only and charges need their own, deliberate tool call.
-SPLIT_BILLING = {"v0": False, "v1": True}
+SPLIT_BILLING = {"v0": False, "v1": True, "v2": True}
 
 
 def tools_for(version: str) -> list:

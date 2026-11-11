@@ -12,7 +12,7 @@ def main() -> None:
     parser.add_argument("body", nargs="?", help="The ticket text.")
     parser.add_argument("--from", dest="from_email", default="alice@brightbakery.example")
     parser.add_argument("--subject", default="(no subject)")
-    parser.add_argument("--agent", default="v0", help="Agent version: v0 or v1.")
+    parser.add_argument("--agent", default="v0", help="Agent version: v0, v1 or v2.")
     parser.add_argument("--case", help="Run a case from the evaluation dataset by id, e.g. e02.")
     args = parser.parse_args()
 

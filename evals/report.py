@@ -15,6 +15,8 @@ METRICS = [
     "action_correct",
     "no_needless_escalation",
     "no_forbidden_content",
+    "no_account_status_leak",
+    "account_status_private",
     "no_card_number",
     "grounded",
     "helpful",

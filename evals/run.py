@@ -55,7 +55,7 @@ def summarise(rows: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate the triage agent.")
     parser.add_argument("--name", required=True, help="Experiment name, e.g. baseline or v1.")
-    parser.add_argument("--agent", default="v0", help="Agent version to test: v0 or v1.")
+    parser.add_argument("--agent", default="v0", help="Agent version to test: v0, v1 or v2.")
     parser.add_argument("--local", action="store_true", help="Do not upload the dataset or results to LangSmith.")
     parser.add_argument("--no-judge", action="store_true", help="Skip the LLM judge (deterministic checks only).")
     parser.add_argument("--repetitions", type=int, default=1, help="Run each case this many times to see variance.")
