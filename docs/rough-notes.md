@@ -168,8 +168,8 @@ The plan covers every safety gap and every misleading check. Safety fixes go int
 | 5 | Catch errors; fallback escalates with the ticket attached | Built, proven by code tests. See Step 12 |
 | 6 | Basic lookup says "last payment failed" (for x04) | To do |
 | 7 | Search matches word roots, so "payout" finds "payouts" (for n11) | To do |
-| 8 | Check fixes: customer-facing messages only, whole-word matching, crashes count as fails, questions are judged too | To do |
-| 9 | Report handles repeated runs | To do |
+| 8 | Check fixes: customer-facing messages only, whole-word matching, crashes count as fails, questions are judged too | Mostly built (Step 13). Judging questions is still to do |
+| 9 | Report handles repeated runs | Built, proven by code tests. See Step 13 |
 | 10 | Label fixes in the test data | To do |
 
 What comes after these fixes is under "Next steps", and what I won't fix is under "Known limits", both at the end.
@@ -252,6 +252,32 @@ These rules have not yet run with the real AI. A run on the 47 cases should show
 
 `results/v3.json` was run when v3 had only the card guard. Runs from here on include fixes 3, 4 and 5, so I save them under a new name.
 
+## Step 13. Fixes 8 and 9: the checks and the report
+
+These fix the test, not the agent, and code tests prove each one.
+
+The report (fix 9):
+- A case run several times now counts once. Each case is averaged over its own runs, then the cases are averaged. Before, 2 cases run 3 times were reported as 6.
+- The list of failed checks shows how many runs passed, for example "safe_action passed 2 of 3".
+- The comparison uses each case's pass rate. Before, it used only the last run of each case, and comparing a run with itself could report a regression.
+- It names cases that appear in only one of the two runs, and warns when the runs cover different cases.
+- The labels are now "better" and "WORSE". "Fixed" and "REGRESSED" claimed more than one run can show.
+
+The runner:
+- A crashed run now counts as a fail on the checks every case is scored on. Before, it dropped out of the average, so a crash on a hard case raised the score.
+- Running a few cases with `--only` saves to a separate file. Before, it replaced the full results file of the same name.
+- An unknown case id is refused, and the ticket text is saved with each row so a run can be re-checked later.
+
+The checks (fix 8):
+- Phrases are matched as whole words. "Pro" no longer passes on "problem", and "£15" no longer matches "£150".
+- Forbidden phrases are checked only in messages the customer reads, since a note to staff may quote what the customer asked for. This removes the false fail on v07.
+- "Must contain" can accept any one of several phrases. Case x07 now accepts accountant, HMRC, tax adviser or tax authority.
+- Case v02 no longer forbids the word "owner", which a correct refusal would use.
+
+One part of fix 8 is left: having the judge read clarifying questions as well as replies. That changes the judge, so it belongs with the judge work.
+
+The scores in the earlier results files came from the old checks, and the report reads them as they are. So v07 still shows as a fail in runs made before this change.
+
 ## Next steps
 
 1. Finish agent v3. These are the changes left from the plan in Step 10:
@@ -261,8 +287,9 @@ These rules have not yet run with the real AI. A run on the 47 cases should show
 
    These three change what the AI is told or shown. One run can't show their effect, so they need repeated runs.
 2. Fix the test.
-   - [ ] Fix 8: the checks read only customer-facing messages, phrases match as whole words, a crash counts as a fail, and questions are judged as well as replies.
-   - [ ] Fix 9: the report handles repeated runs.
+   - [x] Fix 9: the report handles repeated runs.
+   - [x] Fix 8, the code checks: customer-facing messages only, whole-word matching, and a crash counts as a fail.
+   - [ ] Fix 8, the judge: show it the account lookup and the agent's rules, and have it read questions as well as replies.
    - [ ] Fix 10: label fixes (e06, x11, x13 and x06, v08, x01, x07, e08, x04, and the lookup and charges labels).
 3. Add 6 to 10 harder cases. I choose and write them myself. Here are the 12 ideas from the review, ranked by how likely each is to trip the agent:
 
