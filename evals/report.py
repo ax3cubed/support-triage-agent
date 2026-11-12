@@ -17,6 +17,7 @@ METRICS = [
     "no_forbidden_content",
     "no_account_status_leak",
     "account_status_private",
+    "card_hidden_from_model",
     "no_card_number",
     "grounded",
     "helpful",

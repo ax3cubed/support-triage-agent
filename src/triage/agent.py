@@ -23,7 +23,7 @@ from pydantic import BaseModel, Field
 from triage import accounts, kb
 from triage.config import AGENT_MODEL, MAX_MODEL_CALLS
 from triage.prompts import PROMPTS
-from triage.redact import redact
+from triage.redact import find_card_numbers_strict, redact, redact_strict
 
 Category = Literal["product", "billing", "bug", "account_security", "privacy", "other"]
 Team = Literal["billing", "engineering", "security", "privacy", "support"]
@@ -87,7 +87,11 @@ ACTION_NAMES = {"send_reply": "reply", "escalate_to_human": "escalate", "ask_cus
 
 # What each agent version can see. In v0 one lookup returns the whole account, charges included.
 # From v1 the lookup returns the basics only and charges need their own, deliberate tool call.
-SPLIT_BILLING = {"v0": False, "v1": True, "v2": True}
+SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True}
+
+# From v3 the payment-details guard is the strict one. It runs before the graph starts, so the trace
+# never holds the original ticket, and again on every message the agent writes.
+STRICT_GUARD = {"v0": False, "v1": False, "v2": False, "v3": True}
 
 
 def tools_for(version: str) -> list:
@@ -115,6 +119,9 @@ class TriageState(TypedDict, total=False):
 
     ticket: Ticket
     messages: Annotated[list[AnyMessage], add_messages]
+    card_in_ticket: bool
+    card_reached_model: bool
+    outgoing_redactions: int
     retrieved: Annotated[list[dict], operator.add]
     searches: Annotated[list[dict], operator.add]
     tool_calls: Annotated[list[str], operator.add]
@@ -129,15 +136,19 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
     llm = (model or init_chat_model(AGENT_MODEL)).bind_tools(tools_for(version))
     system_prompt = PROMPTS[version]
     split_billing = SPLIT_BILLING[version]
+    strict_guard = STRICT_GUARD[version]
 
     def redact_ticket(state: TriageState) -> dict:
         ticket = state["ticket"]
-        subject, subject_count = redact(ticket["subject"])
-        body, body_count = redact(ticket["body"])
+        clean = redact_strict if strict_guard else redact
+        subject, subject_count = clean(ticket["subject"])
+        body, body_count = clean(ticket["body"])
         text = f"From: {ticket['from_email']}\nSubject: {subject}\n\n{body}"
         return {
             "messages": [SystemMessage(system_prompt), HumanMessage(text)],
-            "redactions": subject_count + body_count,
+            # In v3 the ticket was already cleaned once before the graph started; keep that count.
+            "redactions": state.get("redactions", 0) + subject_count + body_count,
+            "card_reached_model": bool(find_card_numbers_strict(text)),
             "model_calls": 0,
         }
 
@@ -173,6 +184,13 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
             elif name in ACTION_NAMES:
                 if "decision" not in update:
                     update["decision"] = {"action": ACTION_NAMES[name], **args}
+                    if strict_guard:
+                        # Clean whatever the agent wrote before it leaves, in case a detail got through.
+                        for field in ("body", "summary", "question"):
+                            if isinstance(args.get(field), str):
+                                cleaned, found = redact_strict(args[field])
+                                update["decision"][field] = cleaned
+                                update["outgoing_redactions"] = update.get("outgoing_redactions", 0) + found
                 result = "Done."
             else:
                 result = f"There is no tool called {name}."
@@ -230,14 +248,29 @@ def summarise(state: TriageState) -> dict:
         "retrieved_context": "\n\n".join(f"[{c['doc_id']}] {c['section']}\n{c['text']}" for c in retrieved),
         "tool_calls": state.get("tool_calls", []),
         "saw_charges": state.get("saw_charges", False),
+        "card_in_ticket": state.get("card_in_ticket", False),
+        "card_reached_model": state.get("card_reached_model", False),
+        "outgoing_redactions": state.get("outgoing_redactions", 0),
         "model_calls": state.get("model_calls", 0),
         "redactions": state.get("redactions", 0),
         "gave_up": decision.get("gave_up", False),
     }
 
 
+def initial_state(ticket: Ticket, version: str) -> dict:
+    """The state a run starts from. From v3 the ticket is cleaned here, before anything is traced."""
+    raw = f"{ticket['from_email']}\n{ticket['subject']}\n{ticket['body']}"
+    state: dict = {"ticket": ticket, "card_in_ticket": bool(find_card_numbers_strict(raw))}
+    if STRICT_GUARD[version]:
+        subject, subject_count = redact_strict(ticket["subject"])
+        body, body_count = redact_strict(ticket["body"])
+        state["ticket"] = {**ticket, "subject": subject, "body": body}
+        state["redactions"] = subject_count + body_count
+    return state
+
+
 def triage(ticket: Ticket, model: BaseChatModel | None = None, version: str = "v0") -> dict:
     """Run one ticket through the agent and return its decision record."""
     graph = build_graph(model, version)
-    state = graph.invoke({"ticket": ticket}, config={"run_name": "triage", "metadata": {"agent_version": version}})
-    return summarise(state)
+    config = {"run_name": "triage", "metadata": {"agent_version": version}}
+    return summarise(graph.invoke(initial_state(ticket, version), config=config))

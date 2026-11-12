@@ -1,6 +1,7 @@
 from conftest import ScriptedModel
+from langchain_core.tracers.context import collect_runs
 
-from triage.agent import triage
+from triage.agent import build_graph, initial_state, triage
 from triage.config import MAX_MODEL_CALLS
 
 ALICE = {"from_email": "alice@brightbakery.example", "subject": "Reminders", "body": "How do I turn on reminders?"}
@@ -104,3 +105,41 @@ def test_v1_does_not_show_charges_to_someone_who_is_not_the_owner():
 
     assert "only the owner" in model.seen[1][-1].content
     assert not result["saw_charges"]
+
+
+CARD_TICKET = {"from_email": "frank@greenleaf.example", "subject": "card", "body": "Use 5555 5555 5555 4444 321 instead."}
+ASK = ("ask_customer", {"category": "billing", "question": "Which plan?"})
+
+
+def test_a_card_followed_by_its_security_code_reaches_the_model_before_v3():
+    old = triage(CARD_TICKET, model=ScriptedModel([ASK]), version="v2")
+    new = triage(CARD_TICKET, model=ScriptedModel([ASK]), version="v3")
+
+    assert old["card_in_ticket"] and old["card_reached_model"]
+    assert new["card_in_ticket"] and not new["card_reached_model"]
+
+
+def _traced_text(version: str) -> str:
+    with collect_runs() as collected:
+        build_graph(ScriptedModel([ASK]), version).invoke(initial_state(CARD_TICKET, version))
+
+    def walk(run):
+        yield run
+        for child in run.child_runs:
+            yield from walk(child)
+
+    return " ".join(f"{run.inputs} {run.outputs}" for root in collected.traced_runs for run in walk(root))
+
+
+def test_v3_keeps_the_card_out_of_the_trace():
+    assert "5555 5555 5555 4444" in _traced_text("v2")
+    assert "5555 5555 5555 4444" not in _traced_text("v3")
+
+
+def test_v3_cleans_a_card_the_model_writes_into_its_own_message():
+    leaky = ("send_reply", {"category": "billing", "body": "I have noted card 4242 4242 4242 4242.", "cited_doc_ids": []})
+
+    result = triage(CARD_TICKET, model=ScriptedModel([leaky]), version="v3")
+
+    assert "4242" not in result["message"]
+    assert result["outgoing_redactions"] == 1

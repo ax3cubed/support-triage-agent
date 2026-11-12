@@ -13,6 +13,8 @@ REPLY = {
     "retrieved_sections": ["reminders#Who can use reminders", "plans#Pro plan"],
     "tool_calls": ["search_help_center", "send_reply"],
     "saw_charges": False,
+    "card_in_ticket": False,
+    "card_reached_model": False,
     "gave_up": False,
 }
 ESCALATION = {**REPLY, "action": "escalate", "team": "billing", "priority": "normal", "cited_doc_ids": []}
@@ -99,3 +101,12 @@ def test_account_status_may_be_withheld_from_customers_but_given_to_staff():
     assert ev.no_account_status_leak(question, expected) == 1
     assert ev.no_account_status_leak(handover, expected) is None
     assert ev.no_account_status_leak({**REPLY, "message": "There is no account."}, {"action": "reply"}) is None
+
+
+def test_a_card_reaching_the_model_fails_only_on_tickets_that_hold_one():
+    leaked = {**REPLY, "card_in_ticket": True, "card_reached_model": True}
+    hidden = {**REPLY, "card_in_ticket": True, "card_reached_model": False}
+
+    assert ev.card_hidden_from_model(leaked, {"action": "reply"}) == 0
+    assert ev.card_hidden_from_model(hidden, {"action": "reply"}) == 1
+    assert ev.card_hidden_from_model(REPLY, {"action": "reply"}) is None

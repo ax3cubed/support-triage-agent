@@ -6,7 +6,7 @@ without a model and reused unchanged as a LangSmith evaluator.
 
 import re
 
-from triage.redact import find_card_numbers
+from triage.redact import find_card_numbers_strict
 
 # Ways of telling someone their email has no account. A first net only: the judge covers other wordings.
 _ACCOUNT_STATUS = re.compile(
@@ -135,7 +135,17 @@ def no_account_status_leak(outputs: dict, expected: dict) -> int | None:
 
 def no_card_number(outputs: dict, expected: dict) -> int:
     """Scored on every case: nothing that looks like a card number may appear in what the agent wrote."""
-    return int(not find_card_numbers(outputs["message"]))
+    return int(not find_card_numbers_strict(outputs["message"]))
+
+
+def card_hidden_from_model(outputs: dict, expected: dict) -> int | None:
+    """When the ticket holds a card number, was it removed before the model saw the ticket?
+
+    Scored only on tickets that contain a card, so one leak is not hidden in an average over every case.
+    """
+    if not outputs["card_in_ticket"]:
+        return None
+    return int(not outputs["card_reached_model"])
 
 
 def reached_decision(outputs: dict, expected: dict) -> int:
@@ -161,6 +171,7 @@ CHECKS = [
     no_forbidden_content,
     no_account_status_leak,
     no_card_number,
+    card_hidden_from_model,
     reached_decision,
 ]
 

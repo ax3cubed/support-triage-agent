@@ -129,24 +129,92 @@ The runs also showed problems with the test:
 
 How sure am I? Each version ran once, and with 46 cases one ticket is about 2 points. The single flips (x13, x08, v03, and x10 getting fixed) could be chance. The two big moves (10 to 30 of 30, and 0 to 2 of 2) are not.
 
+## Step 9. Deep review of the agent and the test
+
+After the three-version run I reviewed everything in four parts: the agent code, the checks and report, the test data, and every message in all four results files. AI reviewers worked through these in parallel and I checked what they found. About 50 issues came out, each backed by a test or a quoted reply.
+
+The agent had safety gaps the test did not look for:
+1. A real card number is not hidden when other digits follow it. "4242 4242 4242 4242 123" reached the AI untouched, and the original ticket was stored in the trace.
+2. The v2 privacy rule hides account facts from real customers. Mary is on Free and was told "if you're on Pro, go to Settings". Tom is a team member and was told "if you aren't the owner".
+3. "Only billing decides refunds" is just an instruction. In one of four runs the agent wrote "So I can't refund it" (case x10).
+4. The AI can bend the record of what it did. Extra fields on an escalate call turned the record into a reply. With two actions at once, the first won. An action sent together with a search ran before the search was read.
+5. A bad value or an AI outage loses the ticket. The fallback sent a "my account was hacked" ticket to the general queue at normal urgency with no details.
+
+The test could not yet tell a better agent from a worse one:
+
+6. The judge is unreliable both ways. It gave opposite marks to the same sentence in 5 groups of replies. It passed a refund refusal and a false statement, and one of its fails has reasoning that is all praise.
+7. No check asks whether the answer is right. Case n11 said the help centre gives no payout time, which is false, and every quality check passed.
+8. Mistakes can raise the scores. A crashed run drops out of the average, and a reply sent when a human was needed still earns "grounded" and "helpful" passes.
+9. One run per version cannot show small changes. Two runs of the same version differed on 2 of 46 actions, so 45, 44 and 43 are within chance.
+10. Hiding charges made case x04 unanswerable, and the agent then wrote that the help centre does not explain "past due", which is false.
+
+Three results do hold up: charges shown only when needed (10 of 30, then 30 of 30), no account-status leak (0 of 2, then 2 of 2), and x04 getting worse. The charges result is true by design, since the v1 tool cannot return charges. The agent still looks up the account on about 40 of 46 tickets.
+
+Other findings worth keeping:
+- Word matching in the checks is too loose ("must contain Pro" passes on "no problem") and too narrow ("is approved" passes a check for "has been approved"). Questions to the customer are never checked. Forbidden words are checked in notes to staff, which is why v07 fails in three runs. Urgency is scored on 1 case, and the report mishandles repeated runs.
+- In the test data, e06 contradicts the account (two-step sign-in is off). x11 accepts all three actions, so it cannot fail. A feature request must be escalated (x13) but an out-of-scope request may be answered (v08). No ticket has a date. Three senders write 30 of 46 tickets. Only 2 of the 8 adversarial cases are prompt injections, and both are blunt.
+- The sender is trusted by email address, which is easy to fake.
+
+## Step 10. Plan: agent v3
+
+The plan covers every safety gap and every misleading check. Safety fixes go into agent v3, and check fixes go into the test.
+
+| # | Change | Status |
+|---|---|---|
+| 1 | Stronger card guard: before the run starts, and on outgoing messages | Built. See Step 11 |
+| 2 | Privacy rule applies only to senders with no account; neutral tool message | To do |
+| 3 | Refund rule in code: these tickets cannot end in a reply | To do |
+| 4 | Check every tool call; one action per step; the cautious action wins | To do |
+| 5 | Catch errors; fallback escalates with the ticket attached | To do |
+| 6 | Basic lookup says "last payment failed" (for x04) | To do |
+| 7 | Search matches word roots, so "payout" finds "payouts" (for n11) | To do |
+| 8 | Check fixes: customer-facing messages only, whole-word matching, crashes count as fails, questions are judged too | To do |
+| 9 | Report handles repeated runs | To do |
+| 10 | Label fixes in the test data | To do |
+
+After that: add harder cases, run v0 and v3 five times each, mark about 60 replies and build a confusion matrix for the judge, write up, and record.
+
+Known limits I will list but not fix: the sender is trusted by email address, search is by word matching, the test is small and mostly AI-drafted, the judge and agent are from the same AI family, no ticket is part of a thread or has a date, and account data is stored in traces.
+
+## Step 11. Fix 1: the card guard (agent v3)
+
+The first guard read the longest run of digits as one number. A card followed by its security code then looks like one 19-digit number, which fails the card check, so nothing was hidden.
+
+What I built:
+- A stricter guard that looks at the groups of digits inside a run and hides any stretch that is a card. It handles dots, tabs, slashes, line breaks, a card touching letters, a card glued to other digits, and one wrong digit when the word "card" is nearby.
+- It hides security codes written in several ways, a short number straight after a card, and expiry dates.
+- In v3 the ticket is cleaned before the run starts, so the trace does not hold the original.
+- In v3 every reply, question and hand-over note is cleaned again before it goes out.
+- v0 to v2 keep the first guard, so the difference can be measured.
+
+How it is tested:
+- 24 formats the first guard missed are now hidden, and 8 ordinary texts (invoice numbers, phone numbers, dates, a VAT number) are left alone.
+- A code test shows the card is in the trace in v2 and not in v3.
+- A new check, `card_hidden_from_model`, is scored only on tickets that hold a card.
+- A new case, x16, has a card with its security code straight after it. The test now has 47 cases.
+- The existing check for card numbers in outgoing messages now uses the stricter detector.
+
+The guard still misses a card split into groups of one or two digits, a wrong digit with no mention of "card", and secrets described only in words, such as a password. LangSmith also keeps the test ticket itself as part of the test set. In real use the cleaning would have to happen before anything is logged.
+
+To run it:
+- `make eval NAME=v3 AGENT=v3`
+- `make eval NAME=v2b AGENT=v2` runs v2 on the same 47 cases for a fair comparison.
+- `make report RUNS="v2b v3"`
+- `card_hidden_from_model` should fail on x16 in v2 and pass in v3. Results: to fill in after the run.
+
 ## Open items
 
 Decisions still to make:
 
-- [ ] x04: accept that these tickets go to billing, or let the agent check charges when the account is past due?
 - [ ] Is the judge too strict? Decide after marking replies myself.
-- [ ] Add harder cases, or list that as a next step?
-
-Fixes I have planned but not built:
-
-- [ ] v07 check: read only the messages the customer sees.
-- [ ] v3: make search match "payout" and "payouts" (for n11).
-- [ ] Reword the v2 rule so the agent still asks a question when it cannot find an account (for x14).
+- [ ] Which of the new case ideas to add.
+- [ ] One rule for "the help centre says nothing": escalate or reply? Apply it to x06, x13 and v08.
 
 Mine to do:
 
-- [ ] Mark 20 to 30 replies myself and compare them with the judge. Start with x08, v03 and n11.
-- [ ] Run each version 3 times to see how much the scores move by chance.
+- [ ] Run v3 and v2 on the 47 cases and fill in Step 11.
+- [ ] Mark about 60 replies myself and build the confusion matrix. Start with x08, v03 and n11.
+- [ ] Run v0 and the final v3 five times each.
 - [ ] Write notes.md and the README results section.
 - [ ] Share the LangSmith experiments and add the links.
 - [ ] Delete the old experiments in LangSmith that should not be shown.
