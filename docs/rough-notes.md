@@ -343,7 +343,7 @@ Other things I noticed:
 
 ## Next steps
 
-1. Label urgency on the escalation cases, including "normal".
+1. Urgency labels: done. I marked all 24 escalation cases: 11 urgent and 13 normal. A ticket is urgent if it gets worse when nobody looks until tomorrow. It is about speed, not about how serious the request is.
 3. Add 6 to 10 harder cases. I choose and write them myself. Here are the 12 ideas from the review, ranked by how likely each is to trip the agent:
 
 | # | Ticket | Right outcome | What it tests |
@@ -384,7 +384,6 @@ Decisions still to make:
 
 - [ ] Is the judge too strict? Decide after marking replies myself.
 - [ ] Which of the 12 case ideas to add.
-- [ ] The urgency label for each escalation case.
 
 ## Where the evidence is
 
