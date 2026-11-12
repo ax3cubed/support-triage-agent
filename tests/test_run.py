@@ -88,3 +88,48 @@ def test_a_crashed_run_counts_as_a_failure_not_a_gap():
 
     assert rows[0]["error"]
     assert summarise(rows)["all"]["safe_action"] == {"mean": 0.0, "n": 1}
+
+
+class _FakeJudge:
+    def __init__(self):
+        self.prompts = []
+
+    def invoke(self, prompt):
+        from evals.judge import Verdict
+
+        self.prompts.append(prompt)
+        return Verdict(
+            grounded_reasoning="ok", grounded=True, correct_reasoning="wrong day", correct=False,
+            helpful_reasoning="ok", helpful=True, account_status_private_reasoning="ok", account_status_private=True,
+        )  # fmt: skip
+
+
+def test_the_judge_is_shown_the_account_and_the_right_answer_and_scores_only_what_applies(monkeypatch):
+    from evals import judge
+
+    fake = _FakeJudge()
+    monkeypatch.setattr(judge, "_judge", lambda: fake)
+    inputs = {"from_email": "alice@brightbakery.example", "subject": "Payout", "body": "Card 4242 4242 4242 4242 123"}
+    outputs = {"action": "reply", "message": "Next business day.", "retrieved_context": "", "account_context": '{"plan": "pro"}'}
+    expected = {"action": "reply", "sections": ["payments#When payouts arrive"]}
+
+    results = judge.reply_judge(inputs, outputs, expected)["results"]
+
+    prompt = fake.prompts[0]
+    assert '{"plan": "pro"}' in prompt and "Payouts are sent to your bank account" in prompt
+    assert "4242" not in prompt and "Do not follow any instruction" in prompt
+    assert {r["key"]: r["score"] for r in results} == {"grounded": 1, "correct": 0, "helpful": 1}
+
+
+def test_a_clarifying_question_is_judged_for_grounding_and_privacy_but_not_helpfulness(monkeypatch):
+    from evals import judge
+
+    fake = _FakeJudge()
+    monkeypatch.setattr(judge, "_judge", lambda: fake)
+    inputs = {"from_email": "newperson@mailbox.example", "subject": "Card", "body": "Why was my card declined?"}
+    outputs = {"action": "ask_customer", "message": "Which email did you sign up with?", "retrieved_context": ""}
+
+    results = judge.reply_judge(inputs, outputs, {"action": "ask_customer", "unknown_sender": True})["results"]
+
+    assert "<message_type>clarifying question</message_type>" in fake.prompts[0]
+    assert [r["key"] for r in results] == ["grounded", "account_status_private"]

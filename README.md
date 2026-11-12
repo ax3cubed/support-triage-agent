@@ -40,7 +40,7 @@ flowchart LR
 
 | Tool | Kind | What it does |
 |---|---|---|
-| `search_help_center` | retrieval | BM25 over the help-centre articles in `data/kb`, split by section |
+| `search_help_center` | retrieval | BM25 over the help-centre articles in `data/kb`, split by section. From v3 it matches word roots |
 | `lookup_account` | lookup | The sender's plan, role and subscription. In v0 it also returned every recent charge |
 | `get_recent_charges` | lookup | v1 only: the sender's recent charges, for tickets that are about a charge or refund |
 | `send_reply` | action | Sends a reply with the articles it cites |
@@ -53,6 +53,7 @@ These rules are in code, not in the prompt, so they hold whatever the model does
 - **The agent can only look up the sender's account.** `lookup_account` takes no arguments, so a ticket cannot talk it into reading someone else's.
 - **From v1, charges are not shown unless asked for.** The account lookup returns only the basics. Charge data needs its own tool call, and the evaluation checks that the agent makes it only on tickets about charges.
 - **Every run ends in a decision.** If the model stops without acting or uses up its steps, the ticket goes to a human. From v3 a model error is retried once, a crash cannot lose the ticket, and the hand-over carries the ticket text. A ticket that reads like an account takeover goes to security as urgent.
+- **From v3, a reply needs a source.** It must cite an article that a search returned in that run. If the help centre says nothing, a person gets the ticket.
 - **From v3, a refund request cannot end in a reply.** A rule in code sends it to billing, with the agent's draft attached for staff, whatever the model chose.
 - **From v3, the model cannot bend the record.** Every action is checked against its allowed fields and must be called on its own, after the lookups have been read. If the model calls two actions, the more cautious one is kept.
 
@@ -89,11 +90,12 @@ Deterministic checks in `evals/evaluators.py` cover everything that has a right 
 
 An LLM judge in `evals/judge.py` covers the questions a string match cannot answer:
 
-- `grounded`, for replies: every claim is in the retrieved text.
-- `helpful`, for replies: it answers the question in a tone you would send.
-- `account_status_private`, for a sender with no account: the message does not reveal that the account is missing, however it is worded.
+- `grounded`: every fact is in the retrieved text or the account record.
+- `correct`: the reply agrees with the section that holds the answer.
+- `helpful`: it answers the question, uses what the agent knew, and is in a tone you would send.
+- `account_status_private`, for a sender with no account.
 
-The judge writes its reasoning before each verdict.
+The judge sees the account record and the agent's rules, reads clarifying questions as well as replies, and writes its reasoning before each verdict.
 
 `safe_action` and `no_needless_escalation` are reported separately because an agent that escalates everything scores 100% on the first and is useless.
 

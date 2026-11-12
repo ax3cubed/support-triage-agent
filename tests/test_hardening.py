@@ -11,15 +11,22 @@ HACKED = {"from_email": "charles@northwindlogistics.example", "subject": "Help",
 ESCALATE = ("escalate_to_human", {"category": "billing", "team": "billing", "priority": "normal", "summary": "Refund."})
 
 
-def reply(body: str) -> tuple:
-    return ("send_reply", {"category": "billing", "body": body, "cited_doc_ids": ["refunds"]})
+FIND_REFUNDS = [("search_help_center", {"query": "refund policy"})]
+FIND_VAT = [("search_help_center", {"query": "add VAT to an invoice"})]
+
+
+def reply(body: str, cite: str = "refunds") -> tuple:
+    return ("send_reply", {"category": "billing", "body": body, "cited_doc_ids": [cite]})
+
+
+VAT_REPLY = reply("Go to Settings › Tax and switch on VAT.", cite="tax")
 
 
 def test_a_reply_to_a_refund_request_is_sent_to_billing_and_the_draft_is_kept_for_staff():
     refusal = "Monthly charges are a single correct charge. So I can't refund it."
 
-    before = triage(REFUND, model=ScriptedModel([reply(refusal)]), version="v2")
-    after = triage(REFUND, model=ScriptedModel([reply(refusal)]), version="v3")
+    before = triage(REFUND, model=ScriptedModel(FIND_REFUNDS, [reply(refusal)]), version="v2")
+    after = triage(REFUND, model=ScriptedModel(FIND_REFUNDS, [reply(refusal)]), version="v3")
 
     assert before["action"] == "reply"
     assert (after["action"], after["team"], after["gate"]) == ("escalate", "billing", "refund")
@@ -27,13 +34,15 @@ def test_a_reply_to_a_refund_request_is_sent_to_billing_and_the_draft_is_kept_fo
 
 
 def test_a_refund_promise_is_stopped_even_when_the_ticket_did_not_ask_for_one():
-    result = triage(HOW_TO, model=ScriptedModel([reply("Done. Your refund has been approved.")]), version="v3")
+    promise = reply("Done. Your refund has been approved.")
+
+    result = triage(HOW_TO, model=ScriptedModel(FIND_REFUNDS, [promise]), version="v3")
 
     assert (result["action"], result["gate"]) == ("escalate", "refund")
 
 
 def test_an_ordinary_reply_is_not_touched_by_the_refund_rule():
-    result = triage(HOW_TO, model=ScriptedModel([reply("Go to Settings › Tax and switch on VAT.")]), version="v3")
+    result = triage(HOW_TO, model=ScriptedModel(FIND_VAT, [VAT_REPLY]), version="v3")
 
     assert (result["action"], result["gate"]) == ("reply", None)
 
@@ -66,10 +75,10 @@ def test_of_two_actions_in_one_step_the_cautious_one_is_kept_whatever_the_order(
 
 
 def test_an_action_called_with_a_lookup_waits_until_the_result_has_been_read():
-    search = ("search_help_center", {"query": "add VAT"})
-    model = ScriptedModel([search, reply("Go to Settings › Tax.")], [reply("Go to Settings › Tax.")])
+    together = [*FIND_VAT, VAT_REPLY]
+    model = ScriptedModel(together, [VAT_REPLY])
 
-    before = triage(HOW_TO, model=ScriptedModel([search, reply("Go to Settings › Tax.")]), version="v2")
+    before = triage(HOW_TO, model=ScriptedModel(together), version="v2")
     after = triage(HOW_TO, model=model, version="v3")
 
     assert before["model_calls"] == 1
@@ -78,7 +87,7 @@ def test_an_action_called_with_a_lookup_waits_until_the_result_has_been_read():
 
 
 def test_a_bad_search_query_is_reported_to_the_model_and_does_not_crash():
-    model = ScriptedModel([("search_help_center", {"query": None})], [reply("Go to Settings › Tax.")])
+    model = ScriptedModel([("search_help_center", {"query": None})], FIND_VAT, [VAT_REPLY])
 
     result = triage(HOW_TO, model=model, version="v3")
 
@@ -94,7 +103,7 @@ def test_a_model_outage_hands_a_hacked_account_to_security_with_the_ticket_attac
 
 
 def test_one_failed_model_call_is_retried():
-    result = triage(HOW_TO, model=ScriptedModel(TimeoutError(), [reply("Go to Settings › Tax.")]), version="v3")
+    result = triage(HOW_TO, model=ScriptedModel(TimeoutError(), FIND_VAT, [VAT_REPLY]), version="v3")
 
     assert result["action"] == "reply" and not result["gave_up"]
 
@@ -129,3 +138,56 @@ def test_tool_calls_beyond_the_limit_in_one_step_are_refused():
     result = triage(HOW_TO, model=ScriptedModel(flood, [ESCALATE]), version="v3")
 
     assert len(result["searches"]) == MAX_TOOL_CALLS_PER_STEP and result["refused_calls"] == 4
+
+
+def test_a_reply_with_no_source_is_refused_and_the_model_is_told_to_hand_over():
+    guess = ("send_reply", {"category": "product", "body": "We plan to add that soon.", "cited_doc_ids": []})
+    handover = ("escalate_to_human", {"category": "product", "team": "support", "priority": "normal", "summary": "Idea."})
+    model = ScriptedModel([guess], [handover])
+
+    before = triage(HOW_TO, model=ScriptedModel([guess]), version="v2")
+    after = triage(HOW_TO, model=model, version="v3")
+
+    assert before["action"] == "reply"
+    assert "must cite at least one article" in model.seen[1][-1].content
+    assert (after["action"], after["team"]) == ("escalate", "support")
+
+
+def test_a_reply_citing_an_article_that_was_never_retrieved_is_refused():
+    invented = reply("Pro costs £20.", cite="pricing-2027")
+
+    result = triage(HOW_TO, model=ScriptedModel(FIND_VAT, [invented], [VAT_REPLY]), version="v3")
+
+    assert result["cited_doc_ids"] == ["tax"] and result["refused_calls"] == 1
+
+
+def test_v3_does_not_tell_the_model_outright_that_the_sender_has_no_account():
+    stranger = {**HOW_TO, "from_email": "newperson@mailbox.example"}
+    old, new = ScriptedModel([("lookup_account", {})], [ESCALATE]), ScriptedModel([("lookup_account", {})], [ESCALATE])
+
+    triage(stranger, model=old, version="v2")
+    triage(stranger, model=new, version="v3")
+
+    assert "No Ledgerly account uses the sender's email" in old.seen[1][-1].content
+    assert "Do not tell them this" in new.seen[1][-1].content
+
+
+def test_v3_account_basics_say_the_last_payment_failed_without_any_amount():
+    frank = {**HOW_TO, "from_email": "frank@greenleaf.example"}
+    model = ScriptedModel([("lookup_account", {})], [ESCALATE])
+
+    result = triage(frank, model=model, version="v3")
+
+    shown = model.seen[1][-1].content
+    assert '"last_payment": "failed"' in shown and "£" not in shown
+    assert not result["saw_charges"]
+
+
+def test_v3_search_finds_payouts_when_asked_about_a_payout():
+    query = [("search_help_center", {"query": "payout timing"})]
+
+    old = triage(HOW_TO, model=ScriptedModel(query, [ESCALATE]), version="v2")
+    new = triage(HOW_TO, model=ScriptedModel(query, [ESCALATE]), version="v3")
+
+    assert "payments#When payouts arrive" not in old["retrieved_sections"]
+    assert "payments#When payouts arrive" in new["retrieved_sections"]

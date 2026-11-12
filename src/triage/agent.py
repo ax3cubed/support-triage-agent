@@ -94,11 +94,23 @@ SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True}
 # - every tool call is checked against its schema, and extra fields are refused
 # - an action must be called on its own; of two actions the more cautious is kept
 # - a refund request cannot end in a reply (triage.policy.refund_gate)
+# - a reply must cite an article that a search returned in this run
+# - search matches word roots; an unknown sender gets a neutral lookup message; the account basics
+#   say whether the last payment failed, without amounts
 # - errors and silence end in a hand-over that carries the ticket, not in a lost ticket
 HARDENED = {"v0": False, "v1": False, "v2": False, "v3": True}
 ACTION_CLASSES = {"send_reply": send_reply, "escalate_to_human": escalate_to_human, "ask_customer": ask_customer}
 # Most cautious first: used when the model calls more than one action in a step.
 CAUTION_ORDER = ["escalate_to_human", "ask_customer", "send_reply"]
+NO_ACCOUNT = "No Ledgerly account uses the sender's email."
+NO_ACCOUNT_NEUTRAL = (
+    "No account details are available for this sender. Do not tell them this. If you need their account to go on, "
+    "ask which email address they signed up with."
+)
+NO_SOURCE = (
+    "Not done. A reply must cite at least one article that a search returned, and only such articles. "
+    "If the help centre does not answer this, call escalate_to_human for the support team."
+)
 NUDGE = "You must finish by calling exactly one action tool: send_reply, escalate_to_human or ask_customer."
 
 
@@ -134,6 +146,7 @@ class TriageState(TypedDict, total=False):
     searches: Annotated[list[dict], operator.add]
     tool_calls: Annotated[list[str], operator.add]
     saw_charges: bool
+    account_context: Annotated[list[str], operator.add]
     redactions: int
     model_calls: int
     refused_calls: int
@@ -188,7 +201,7 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
                     update["refused_calls"] += 1
                     return "Not done. The query must be a short piece of text."
                 query = query[:300]
-            chunks = kb.search(query)
+            chunks = kb.search(query, roots=hardened)
             update["retrieved"] += [{"doc_id": c.doc_id, "section": c.section, "text": c.text} for c in chunks]
             update["searches"].append({"query": query, "sections": [f"{c.doc_id}#{c.section}" for c in chunks]})
             return kb.format_chunks(chunks)
@@ -196,15 +209,23 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
             account = accounts.lookup(state["ticket"]["from_email"])
             shows_charges = name == "get_recent_charges" or not split_billing
             if not account:
-                return "No Ledgerly account uses the sender's email."
+                return NO_ACCOUNT_NEUTRAL if hardened else NO_ACCOUNT
+            charges = account["recent_charges"]
             # Non-owners have a refusal string in place of charge rows, so they have seen no charges.
-            if shows_charges and isinstance(account["recent_charges"], list):
+            if shows_charges and isinstance(charges, list):
                 update["saw_charges"] = True
             if name == "get_recent_charges":
-                return json.dumps(account["recent_charges"], ensure_ascii=False)
-            if split_billing:
-                return json.dumps({k: v for k, v in account.items() if k != "recent_charges"}, ensure_ascii=False)
-            return json.dumps(account, ensure_ascii=False)
+                result = json.dumps(charges, ensure_ascii=False)
+            elif split_billing:
+                basics = {k: v for k, v in account.items() if k != "recent_charges"}
+                if hardened and isinstance(charges, list) and charges:
+                    # Enough to explain a downgrade, with no amounts or dates.
+                    basics["last_payment"] = charges[0]["status"]
+                result = json.dumps(basics, ensure_ascii=False)
+            else:
+                result = json.dumps(account, ensure_ascii=False)
+            update["account_context"].append(result)
+            return result
         return f"There is no tool called {name}."
 
     def checked_action(name: str, args: dict) -> tuple[dict | None, str]:
@@ -220,7 +241,14 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
         return {**fields, "action": ACTION_NAMES[name]}, "Done."
 
     def run_tools(state: TriageState) -> dict:
-        update: dict = {"messages": [], "retrieved": [], "searches": [], "tool_calls": [], "refused_calls": 0}
+        update: dict = {
+            "messages": [],
+            "retrieved": [],
+            "searches": [],
+            "tool_calls": [],
+            "account_context": [],
+            "refused_calls": 0,
+        }
         calls = state["messages"][-1].tool_calls
         refused: dict[str, str] = {}
         if hardened:
@@ -258,6 +286,11 @@ def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
                 result = "Done."
             else:
                 decision, result = checked_action(name, args)
+                retrieved_ids = {chunk["doc_id"] for chunk in state.get("retrieved", [])}
+                if decision and decision["action"] == "reply":
+                    cited = set(decision["cited_doc_ids"])
+                    if not cited or not cited <= retrieved_ids:
+                        decision, result = None, NO_SOURCE
                 if decision is None:
                     update["refused_calls"] += 1
                 else:
@@ -359,6 +392,7 @@ def summarise(state: TriageState) -> dict:
         "retrieved_context": "\n\n".join(f"[{c['doc_id']}] {c['section']}\n{c['text']}" for c in retrieved),
         "tool_calls": state.get("tool_calls", []),
         "saw_charges": state.get("saw_charges", False),
+        "account_context": "\n".join(state.get("account_context", [])),
         "card_in_ticket": state.get("card_in_ticket", False),
         "card_reached_model": state.get("card_reached_model", False),
         "outgoing_redactions": state.get("outgoing_redactions", 0),

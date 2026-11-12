@@ -20,6 +20,7 @@ METRICS = [
     "card_hidden_from_model",
     "no_card_number",
     "grounded",
+    "correct",
     "helpful",
     "category_correct",
     "team_correct",

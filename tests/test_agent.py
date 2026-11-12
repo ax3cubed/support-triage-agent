@@ -137,9 +137,11 @@ def test_v3_keeps_the_card_out_of_the_trace():
 
 
 def test_v3_cleans_a_card_the_model_writes_into_its_own_message():
-    leaky = ("send_reply", {"category": "billing", "body": "I have noted card 4242 4242 4242 4242.", "cited_doc_ids": []})
+    search = [("search_help_center", {"query": "update the card on file"})]
+    body = "I have noted card 4242 4242 4242 4242."
+    leaky = ("send_reply", {"category": "billing", "body": body, "cited_doc_ids": ["subscription"]})
 
-    result = triage(CARD_TICKET, model=ScriptedModel([leaky]), version="v3")
+    result = triage(CARD_TICKET, model=ScriptedModel(search, [leaky]), version="v3")
 
     assert "4242" not in result["message"]
     assert result["outgoing_redactions"] == 1
