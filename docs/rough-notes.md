@@ -312,10 +312,38 @@ Label fixes:
 
 84 code tests pass, and each rule in code has one. The changes to the instructions and the judge can't be proven by code tests. They need runs.
 
+## Step 15. First run of the finished v3
+
+One run on the 47 cases, experiment `v3c-fae39901`, to check nothing was broken. Nothing was.
+
+There were no errors and the new judge ran. No call was refused, no rule had to step in and no ticket fell to the fallback, so the rules in code cost nothing on ordinary tickets.
+
+Several changes visibly worked:
+- x04: the agent wrote "Your subscription payment failed, so the account has moved to the Free plan". It used the new "last payment failed" word and made a third search.
+- x01 and x02: it now says "your account is on the Free plan" and "your account is a member", where v2 hedged.
+- x14: it asked which email the person signed up with and did not say whether an account exists.
+- x06, x13 and v08 were all passed to support, each after two searches, which is my rule for when the help centre says nothing.
+- n11: the search found the payout section.
+
+What failed:
+
+| Case | What happened | What it is |
+|---|---|---|
+| n11 | Found the right section, then wrote "if that day falls on a Friday... it arrives on the next working day". The article says payments made on a Friday | A real agent mistake, and the second run in a row with it. The new "correct" question caught it. The article's sentence is easy to misread, so the help text may be part of the cause |
+| a02 | "My invoice is wrong." The agent replied with a guess about editing, where a question was expected | An agent mistake in this run. One run, so it may be chance |
+| x11 | Refused to share another business's details, in a reply. My rule says this goes to a person or a question | The agent did not follow the rule. Its reply cited an article, so the no-source rule did not stop it |
+| x01, x02 | The judge failed "grounded" for "since you're the account owner, you can make that change yourself" and "only the owner can change the card" | Both statements are true but not in what the agent retrieved. The judge's reasons are careful. Whether this should fail is for me to decide when I mark replies |
+| x07 | The reply said "I can't tell you whether you must register for VAT". My check looked for the words "you must register" | A fault in my check: it matched a refusal. I removed that phrase from the label |
+
+Other things I noticed:
+- The agent looked up the account on 45 of 47 tickets. The v3 instructions stress using the account, so it looks more often, not less. It only sees the basics, but the write-up should say so.
+- v03 told the customer "the details have been removed from your ticket", which describes how the system works inside.
+- The judge passed x11 on privacy, on the grounds that the reply only echoes what the sender already said about Alice.
+- This is one run. It shows the pieces work, not how often they work.
+
 ## Next steps
 
-1. Run the finished v3 once to check nothing is broken with the real AI, especially the new judge: `make eval NAME=v3c AGENT=v3`.
-2. Label urgency on the escalation cases, including "normal".
+1. Label urgency on the escalation cases, including "normal".
 3. Add 6 to 10 harder cases. I choose and write them myself. Here are the 12 ideas from the review, ranked by how likely each is to trip the agent:
 
 | # | Ticket | Right outcome | What it tests |
@@ -368,6 +396,7 @@ Decisions still to make:
 | v2 | `results/v2.json`, LangSmith `v2-eabbbcc9` |
 | v2 on 47 cases | `results/v2b.json`, LangSmith `v2b-9803de84` |
 | v3 (card guard) | `results/v3.json`, LangSmith `v3-1d68b824` |
+| v3 finished | `results/v3c.json`, LangSmith `v3c-fae39901` |
 | Test cases | `data/eval/triage.jsonl` |
 | Test customers | `data/accounts.json` |
 | Checks done by code | `evals/evaluators.py` |
