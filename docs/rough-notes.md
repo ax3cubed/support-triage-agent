@@ -188,7 +188,7 @@ What I built:
 - v0 to v2 keep the first guard, so the difference can be measured.
 
 How it is tested:
-- 24 formats the first guard missed are now hidden, and 8 ordinary texts (invoice numbers, phone numbers, dates, a VAT number) are left alone.
+- 20 formats the first guard missed are now hidden, and 8 ordinary texts (invoice numbers, phone numbers, dates, a VAT number) are left alone.
 - A code test shows the card is in the trace in v2 and not in v3.
 - A new check, `card_hidden_from_model`, is scored only on tickets that hold a card.
 - A new case, x16, has a card with its security code straight after it. The test now has 47 cases.
