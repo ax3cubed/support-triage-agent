@@ -52,7 +52,9 @@ These rules are in code, not in the prompt, so they hold whatever the model does
 - **Payment details are removed before the model sees the ticket.** Card numbers, security codes, expiry dates and UK bank details are masked. From v3 the guard is stricter: it catches a card followed by its security code, which the first guard missed. It also runs before the run starts, so the trace never holds the original, and again on every message the agent writes. No list of patterns is complete, and the notes list the known gaps.
 - **The agent can only look up the sender's account.** `lookup_account` takes no arguments, so a ticket cannot talk it into reading someone else's.
 - **From v1, charges are not shown unless asked for.** The account lookup returns only the basics. Charge data needs its own tool call, and the evaluation checks that the agent makes it only on tickets about charges.
-- **Every run ends in a decision.** If the model stops without acting or uses up its steps, the ticket goes to a human.
+- **Every run ends in a decision.** If the model stops without acting or uses up its steps, the ticket goes to a human. From v3 a model error is retried once, a crash cannot lose the ticket, and the hand-over carries the ticket text. A ticket that reads like an account takeover goes to security as urgent.
+- **From v3, a refund request cannot end in a reply.** A rule in code sends it to billing, with the agent's draft attached for staff, whatever the model chose.
+- **From v3, the model cannot bend the record.** Every action is checked against its allowed fields and must be called on its own, after the lookups have been read. If the model calls two actions, the more cautious one is kept.
 
 ## The dataset
 

@@ -35,5 +35,5 @@ customer. If you need a detail to go on, ask for it without saying why. You may 
 hand the ticket to a team, because only Ledgerly staff read that."""
 )
 
-# v3 keeps the v2 instructions. Its changes are in code: see STRICT_GUARD in agent.py.
+# v3 keeps the v2 instructions. Its changes are in code: see HARDENED in agent.py.
 PROMPTS = {"v0": V0, "v1": V1, "v2": V2, "v3": V2}
