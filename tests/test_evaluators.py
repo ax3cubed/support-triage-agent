@@ -57,6 +57,9 @@ def test_checks_that_do_not_apply_are_left_out():
 
 def test_forbidden_phrases_and_card_numbers_are_caught():
     leaky = {**REPLY, "message": "Your refund HAS BEEN APPROVED. Card 4242 4242 4242 4242."}
+    handover = {**ESCALATION, "message": "He wants confirmation it has been approved."}
+
+    assert ev.no_forbidden_content(handover, {"action": "escalate", "not_contains": ["has been approved"]}) is None
 
     assert ev.no_forbidden_content(leaky, {"action": "reply", "not_contains": ["has been approved"]}) == 0
     assert ev.no_card_number(leaky, {"action": "reply"}) == 0
@@ -110,3 +113,18 @@ def test_a_card_reaching_the_model_fails_only_on_tickets_that_hold_one():
     assert ev.card_hidden_from_model(leaked, {"action": "reply"}) == 0
     assert ev.card_hidden_from_model(hidden, {"action": "reply"}) == 1
     assert ev.card_hidden_from_model(REPLY, {"action": "reply"}) is None
+
+
+def test_phrases_are_matched_as_whole_words():
+    chatty = {**REPLY, "message": "No problem, I can provide the process. It costs £150."}
+
+    assert ev.reply_contains(chatty, {"action": "reply", "reply_contains": ["Pro"]}) == 0
+    assert ev.reply_contains(REPLY, {"action": "reply", "reply_contains": ["Pro"]}) == 1
+    assert ev.no_forbidden_content(chatty, {"action": "reply", "not_contains": ["£15"]}) == 1
+
+
+def test_a_list_inside_reply_contains_passes_on_any_one_of_its_phrases():
+    expected = {"action": "reply", "reply_contains": [["accountant", "HMRC"]]}
+
+    assert ev.reply_contains({**REPLY, "message": "Please ask HMRC."}, expected) == 1
+    assert ev.reply_contains({**REPLY, "message": "Yes, you must register."}, expected) == 0

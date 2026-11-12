@@ -4,7 +4,8 @@ from langsmith import evaluate
 from evals.dataset import load_cases, local_examples
 from evals.evaluators import deterministic_checks
 from evals.judge import reply_judge
-from evals.run import collect_rows, summarise
+from evals.report import changed_cases, failures
+from evals.run import case_scores, collect_rows, summarise
 from triage.agent import triage
 
 
@@ -39,3 +40,51 @@ def test_the_judge_skips_escalations_without_an_evaluator_error(caplog):
 
     assert rows[0]["scores"] == {}
     assert "Error running evaluator" not in caplog.text
+
+
+def _row(case_id: str, repetition: int, **scores) -> dict:
+    outputs = {"action": "reply", "team": None}
+    return {"case_id": case_id, "slice": "normal", "repetition": repetition, "error": None, "outputs": outputs, "scores": scores}
+
+
+def _run(name: str, rows: list[dict]) -> dict:
+    return {"name": name, "rows": rows, "case_scores": case_scores(rows)}
+
+
+def test_a_case_run_three_times_counts_once_with_its_pass_rate():
+    rows = [_row("n01", 1, safe_action=1), _row("n01", 2, safe_action=0), _row("n01", 3, safe_action=1)]
+    rows += [_row("n02", i, safe_action=1) for i in (1, 2, 3)]
+
+    assert summarise(rows)["all"]["safe_action"] == {"mean": 0.833, "n": 2}
+    assert "safe_action passed 2 of 3" in failures(_run("a", rows))
+
+
+def test_comparing_a_repeated_run_with_itself_reports_no_change():
+    rows = [_row("n01", 1, safe_action=1), _row("n01", 2, safe_action=0), _row("n01", 3, safe_action=1)]
+
+    assert changed_cases(_run("a", rows), _run("b", rows)) == "No check changed."
+
+
+def test_a_changed_pass_rate_and_a_missing_case_are_both_reported():
+    before = _run(
+        "a", [_row("n01", i, safe_action=score) for i, score in enumerate((1, 0, 0), 1)] + [_row("n02", 1, safe_action=1)]
+    )
+    after = _run("b", [_row("n01", i, safe_action=1) for i in (1, 2, 3)])
+
+    report = changed_cases(before, after)
+
+    assert "n01: better: safe_action (1 of 3 → 3 of 3)" in report
+    assert "n02: only in a" in report
+
+
+def test_a_crashed_run_counts_as_a_failure_not_a_gap():
+    cases = [case for case in load_cases() if case["id"] == "e03"]
+
+    def crashes(inputs: dict) -> dict:
+        raise TimeoutError("provider down")
+
+    experiment = evaluate(crashes, data=local_examples(cases), evaluators=[deterministic_checks], upload_results=False)
+    rows = collect_rows(experiment)
+
+    assert rows[0]["error"]
+    assert summarise(rows)["all"]["safe_action"] == {"mean": 0.0, "n": 1}
