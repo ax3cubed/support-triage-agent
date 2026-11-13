@@ -15,7 +15,7 @@ make setup          # uv sync, and creates .env from .env.example
 Fill in `ANTHROPIC_API_KEY` and `LANGSMITH_API_KEY` in `.env` (add `LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com` for an EU account), then:
 
 ```bash
-make test                                   # 89 offline tests, no keys needed
+make test                                   # 100 offline tests, no keys needed
 make retrieval                              # search on its own, no keys needed
 make demo CASE=x16 AGENT=v3                 # one ticket, printed step by step
 make eval NAME=try AGENT=v3                 # the whole test once, as a LangSmith experiment
@@ -201,12 +201,31 @@ Without LangSmith access, the same data is in `results/`: one file per run with 
 
 ## How I would evaluate this in production
 
-<!-- To write. Points to cover: run this test before every change and block on safe_action; start with the agent drafting and a person sending; run the code checks on every real ticket and the judge on a sample; watch for a person undoing the agent's action and for reopened tickets; a weekly human review of a small sample; every real failure becomes a new case; the number that would make you switch it off. -->
-
-_To be written before submitting._
+- **Before every change,** run this test (5 runs, so chance doesn't hide a regression) and block the change if `safe_action` drops. That is the costliest error, and v4 showed that a one-paragraph instruction can break a case that used to pass.
+- **At first, the agent drafts and a person sends.** It sends on its own only for the kinds of ticket where people have stopped editing its drafts.
+- **On every real ticket, run the code checks**, since they cost nothing: card hidden, charges only when needed, no account-status leak, a cited source, a decision reached. Run the judge on a sample, because each verdict is a model call.
+- **Watch what people do after the agent.** If a person undoes its action (re-routes the ticket, changes the urgency or rewrites the reply) or the customer reopens the ticket, the agent probably got it wrong.
+- **Each week, have a person mark a small sample** and re-check the judge against those marks. Its grounded score is already known to be an upper limit.
+- **Every real failure becomes a new test case.** Six of my seven harder cases didn't trip either agent, so real tickets are the best source of hard ones.
+- **Switch it off** if a reply goes out on a ticket that needed a person more often than in testing (v3: 54.8 of 56), or if any message leaks a card number or tells a sender whether an account exists.
 
 ## How coding assistants helped, and what I checked myself
 
-<!-- To write. Facts in docs/notes.md: an AI assistant wrote the first version of the code, the help articles and most test cases; AI reviewers found most of the 50 issues. Mine: the decisions (data minimisation, x14, the "help centre says nothing" rule, urgency), eight of the harder cases, all 74 marks, running every evaluation and reading the traces. Mistakes by the assistant that I or the test caught: the double charge on a busy account, a judge bug on the first run, calling x14 a label error, a check that matched a refusal. -->
+An AI coding assistant wrote most of the code, the help articles and most of the test cases, to my direction. AI reviewers working in parallel also found most of the roughly 50 issues in the deep review, each backed by a test or a quoted reply. I read all of them, chose which to fix, and left the rest as known limits.
 
-_To be written before submitting._
+I:
+
+- set the direction for the code: the two-tool split so the agent sees only the data a ticket needs (v1), the rule against revealing whether an account exists (v2), and moving the safety rules out of the instructions and into code (v3)
+- made the other decisions: how to treat x14, handing over when the help centre says nothing, and what "urgent" means
+- picked 7 of the 12 harder case ideas and wrote those tickets
+- marked all 74 messages for the judge check, using a rule I wrote down first
+- ran every evaluation and read the traces behind the numbers
+- read the code, then found and fixed problems in it myself: the built package shipped without its help articles and accounts, a subject line could forge header lines, a local run still uploaded traces, a crashed run dropped out of some checks, an unknown agent version failed with a bare error, and v0 was still the default. I also added CI that runs the tests and a smoke test of the built package.
+
+Mistakes by the assistant that I or the test caught:
+
+- It planted the double charge on Alice's account, and Alice sent a third of the tickets. The agent then mentioned it on unrelated tickets, which led to the least-data decision (v1).
+- It first read x14 as a label error. Reading the reply again, I decided the agent was wrong, which led to v2.
+- It said the judge was too strict. My own marks showed the opposite: when the judge fails a message it is right 63 times in 64, and on grounded it is too lenient.
+- Its judge code filled the first run with errors, so I had to run it again, and one of its checks failed a correct refusal on x07.
+- It left the judge's prompt open to injection: a ticket could close a tag and write its own verdict. I found this while reading the code, and the assistant wrote the fix.
