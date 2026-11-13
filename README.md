@@ -183,7 +183,7 @@ Everything ran through LangSmith. The dataset is `support-triage`, and each `mak
 | v3, 5 runs | `v3-final-97192812` |
 | v4, 5 runs | `v4-86f44895` |
 
-<!-- Paste the public links here before submitting: the comparison of v0-final and v3-final, and two or three traces (x10 and x22 are good ones). -->
+- [The dataset and all experiments in LangSmith](https://eu.smith.langchain.com/public/9300f3c1-3aea-4827-8c0b-1c10dc2bc6fe/d). Tick `v0-final` and `v3-final` and choose Compare to see them side by side. Click any row to open that ticket's trace.
 
 Without LangSmith access, the same data is in `results/`: one file per run with every ticket, the agent's output, each score and the judge's reasoning. `make report RUNS="v0-final v3-final"` prints the comparison.
 
