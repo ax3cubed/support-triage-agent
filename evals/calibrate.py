@@ -2,6 +2,7 @@
 
     uv run python -m evals.calibrate sample v0-final v3-final   # pick the messages to mark
     uv run python -m evals.calibrate mark                       # mark them, one at a time, blind
+    uv run python -m evals.calibrate undo                       # take back the last message you marked
     uv run python -m evals.calibrate report                     # confusion matrix per question
 
 `sample` picks on purpose, not at random: every message the judge failed, every reply sent when a
@@ -102,6 +103,7 @@ def mark() -> None:
     done = {mark["id"] for mark in _read(MARKS_FILE)}
     todo = [item for item in items if item["id"] not in done]
     print(f"{len(done)} of {len(items)} marked. Answer y (pass), n (fail) or s (skip this message). q saves and quits.")
+    print("Made a mistake? Answer s to skip the message and it comes back later, or run `undo` after it is saved.")
     for position, item in enumerate(todo, len(done) + 1):
         _show(item, position, len(items))
         answers: dict[str, int] = {}
@@ -120,6 +122,17 @@ def mark() -> None:
             with MARKS_FILE.open("a", encoding="utf-8") as file:
                 file.write(json.dumps({"id": item["id"], "marks": answers, "note": note}, ensure_ascii=False) + "\n")
     print("\nAll marked. Now run: uv run python -m evals.calibrate report")
+
+
+def undo() -> None:
+    """Remove the most recent mark, so that message is shown again on the next `mark`."""
+    marks = _read(MARKS_FILE)
+    if not marks:
+        raise SystemExit("There are no marks to take back.")
+    removed = marks.pop()
+    text = "".join(json.dumps(mark, ensure_ascii=False) + "\n" for mark in marks)
+    MARKS_FILE.write_text(text, encoding="utf-8")
+    print(f"Took back your marks {removed['marks']} for one message. {len(marks)} marked. Run `mark` to do it again.")
 
 
 def confusion(pairs: list[tuple[int, int]]) -> dict:
@@ -196,6 +209,7 @@ def main() -> None:
     pick.add_argument("--passes", type=int, default=25, help="How many judge-passed messages to add.")
     pick.add_argument("--seed", type=int, default=7)
     commands.add_parser("mark", help="Mark the messages, one at a time, without seeing the judge.")
+    commands.add_parser("undo", help="Take back the last message you marked.")
     commands.add_parser("report", help="Print the confusion matrix for each question.")
     args = parser.parse_args()
 
@@ -210,6 +224,8 @@ def main() -> None:
         print("Now run: uv run python -m evals.calibrate mark")
     elif args.command == "mark":
         mark()
+    elif args.command == "undo":
+        undo()
     else:
         report()
 

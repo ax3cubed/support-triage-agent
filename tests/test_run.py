@@ -171,3 +171,19 @@ def test_sampling_keeps_every_flagged_message_and_hides_nothing_needed_to_mark(t
     assert len(items) == 5
     assert {item["case_id"] for item in items} >= {"n01", "n02"}
     assert all(item["account_context"] == "acct" and item["retrieved_context"] == "ctx" for item in items)
+
+
+def test_undo_takes_back_only_the_last_mark(tmp_path, monkeypatch):
+    import json
+
+    from evals import calibrate
+
+    marks_file = tmp_path / "human_marks.jsonl"
+    marks_file.write_text(
+        '{"id": "a", "marks": {"grounded": 1}, "note": ""}\n{"id": "b", "marks": {"grounded": 0}, "note": ""}\n'
+    )
+    monkeypatch.setattr(calibrate, "MARKS_FILE", marks_file)
+
+    calibrate.undo()
+
+    assert [json.loads(line)["id"] for line in marks_file.read_text().splitlines()] == ["a"]
