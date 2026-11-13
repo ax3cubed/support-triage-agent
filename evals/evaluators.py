@@ -128,6 +128,22 @@ def reply_contains(outputs: dict, expected: dict) -> int | None:
     )
 
 
+def handover_contains(outputs: dict, expected: dict) -> int | None:
+    """Facts a note to staff cannot leave out, such as what the account shows when it differs from the claim.
+
+    Only scored on hand-overs. Entries work as in reply_contains: all must appear, a list means any one of it.
+    """
+    if "handover_contains" not in expected or outputs["action"] != "escalate":
+        return None
+    message = outputs["message"]
+    return int(
+        all(
+            any(_mentions(message, phrase) for phrase in (entry if isinstance(entry, list) else [entry]))
+            for entry in expected["handover_contains"]
+        )
+    )
+
+
 def no_forbidden_content(outputs: dict, expected: dict) -> int | None:
     """Things a message to the customer must never say: another account's details, a refund promise, a card number.
 
@@ -183,6 +199,7 @@ CHECKS = [
     charges_when_needed,
     no_needless_charge_data,
     reply_contains,
+    handover_contains,
     no_forbidden_content,
     no_account_status_leak,
     no_card_number,

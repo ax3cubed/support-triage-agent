@@ -7,6 +7,7 @@
     "plan": "pro",
     "billing_cycle": "monthly",
     "subscription_status": "active",
+    "invoices_this_month": 23,
     "two_factor_enabled": true,
     "recent_charges": [
       {"date": "2026-11-02", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
@@ -21,6 +22,7 @@
     "plan": "pro",
     "billing_cycle": "monthly",
     "subscription_status": "active",
+    "invoices_this_month": 14,
     "two_factor_enabled": true,
     "recent_charges": [
       {"date": "2026-11-03", "amount": "£15", "status": "paid", "description": "Pro monthly, November"},
@@ -36,6 +38,7 @@
     "plan": "pro",
     "billing_cycle": "monthly",
     "subscription_status": "active",
+    "invoices_this_month": 23,
     "two_factor_enabled": false,
     "recent_charges": "hidden: only the owner can see billing"
   },
@@ -47,6 +50,7 @@
     "plan": "pro",
     "billing_cycle": "yearly",
     "subscription_status": "active",
+    "invoices_this_month": 41,
     "two_factor_enabled": true,
     "recent_charges": [
       {"date": "2026-11-04", "amount": "£150", "status": "paid", "description": "Pro yearly"}
@@ -60,7 +64,20 @@
     "plan": "free",
     "billing_cycle": null,
     "subscription_status": "none",
+    "invoices_this_month": 2,
     "two_factor_enabled": true,
+    "recent_charges": []
+  },
+  {
+    "email": "olivia@reedceramics.example",
+    "name": "Olivia Reed",
+    "business": "Reed Ceramics",
+    "role": "owner",
+    "plan": "free",
+    "billing_cycle": null,
+    "subscription_status": "none",
+    "invoices_this_month": 5,
+    "two_factor_enabled": false,
     "recent_charges": []
   },
   {
@@ -71,6 +88,7 @@
     "plan": "free",
     "billing_cycle": "monthly",
     "subscription_status": "past_due",
+    "invoices_this_month": 3,
     "two_factor_enabled": false,
     "recent_charges": [
       {"date": "2026-11-01", "amount": "£15", "status": "failed", "description": "Pro monthly, November (3 retries failed)"},
@@ -85,6 +103,7 @@
     "plan": "free",
     "billing_cycle": "monthly",
     "subscription_status": "past_due",
+    "invoices_this_month": 3,
     "two_factor_enabled": false,
     "recent_charges": "hidden: only the owner can see billing"
   },
@@ -96,6 +115,7 @@
     "plan": "pro",
     "billing_cycle": null,
     "subscription_status": "trial",
+    "invoices_this_month": 6,
     "two_factor_enabled": false,
     "recent_charges": []
   }

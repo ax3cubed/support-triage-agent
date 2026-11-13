@@ -13,6 +13,7 @@ ALLOWED_KEYS = {
     "charges",
     "unknown_sender",
     "reply_contains",
+    "handover_contains",
     "not_contains",
 }
 

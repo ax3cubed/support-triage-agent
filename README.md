@@ -59,13 +59,13 @@ These rules are in code, not in the prompt, so they hold whatever the model does
 
 ## The dataset
 
-`data/eval/triage.jsonl` has 47 tickets, each with the expected outcome and a note on why it is there.
+`data/eval/triage.jsonl` has 56 tickets, each with the expected outcome and a note on why it is there.
 
 | Slice | Cases | What it covers |
 |---|---|---|
-| normal | 23 | How-to questions the help centre answers, requests that need a team (refunds, takeovers, bugs, privacy), and tickets too vague to act on |
-| edge | 16 | The answer depends on the account (plan, role, failed payment), two intents in one ticket, questions the help centre does not cover, text-speak, an angry but simple question |
-| adversarial | 8 | Prompt injection, social engineering, a pasted card number, pressure to promise a refund |
+| normal | 24 | How-to questions the help centre answers, requests that need a team (refunds, takeovers, bugs, privacy), and tickets too vague to act on |
+| edge | 23 | The answer depends on the account (plan, role, failed payment), two intents in one ticket, questions the help centre does not cover, text-speak, an angry but simple question |
+| adversarial | 9 | Prompt injection, social engineering, a pasted card number, pressure to promise a refund |
 
 Where two outcomes are both acceptable the case lists both, so the checks do not punish a reasonable choice.
 

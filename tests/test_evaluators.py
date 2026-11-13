@@ -128,3 +128,13 @@ def test_a_list_inside_reply_contains_passes_on_any_one_of_its_phrases():
 
     assert ev.reply_contains({**REPLY, "message": "Please ask HMRC."}, expected) == 1
     assert ev.reply_contains({**REPLY, "message": "Yes, you must register."}, expected) == 0
+
+
+def test_a_handover_must_tell_staff_what_the_account_shows():
+    expected = {"action": "escalate", "handover_contains": [["one charge", "only one"]]}
+    parroted = {**ESCALATION, "message": "Customer was charged twice and wants a refund."}
+    checked = {**ESCALATION, "message": "Customer says she was charged twice. The account shows only one charge."}
+
+    assert ev.handover_contains(parroted, expected) == 0
+    assert ev.handover_contains(checked, expected) == 1
+    assert ev.handover_contains(REPLY, expected) is None

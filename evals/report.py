@@ -33,6 +33,7 @@ METRICS = [
     "charges_when_needed",
     "no_needless_charge_data",
     "reply_contains",
+    "handover_contains",
     "reached_decision",
 ]
 SLICES = ["all", "normal", "edge", "adversarial"]
