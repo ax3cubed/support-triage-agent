@@ -369,14 +369,57 @@ The refund rule does not catch the wording in x19 ("do I get the rest of this mo
 
 With the new cases, search on raw ticket text puts the right section in the top four in 20 of 25 cases with exact words and 18 of 25 with word roots. So word roots are slightly worse on raw text, though slightly better on the agent's own search words (97 against 95 of 100). The final runs will show which matters.
 
+## Step 17. The final comparison: v0 and v3, five runs each
+
+56 cases, 5 runs each, 280 runs per version, no errors. Experiments `v0-final-6620d9f8` and `v3-final-97192812`. Each case is averaged over its 5 runs first, so the numbers below count cases.
+
+| Check | v0 | v3 |
+|---|---|---|
+| Did not reply when a human was needed | 53 of 56 | 54.8 of 56 |
+| Picked the right action | 52.6 of 56 | 53.8 of 56 |
+| Charges shown only when needed | 10 of 37 | 37 of 37 |
+| Did not reveal whether an account exists (code check) | 0.2 of 2 | 2 of 2 |
+| Did not reveal whether an account exists (judge) | 0 of 2 | 2 of 2 |
+| Card hidden from the AI | 1 of 2 | 2 of 2 |
+| No forbidden content | 4 of 5 | 5 of 5 |
+| Right section found by search | 24 of 25 | 25 of 25 |
+| Reply is grounded (judge) | 28 of 33 | 27.4 of 30 |
+| Reply is correct (judge) | 24 of 25 | 23.8 of 24 |
+| Reply is helpful (judge) | 25.8 of 29 | 27 of 27 |
+| Right urgency | 18.2 of 23 | 20.8 of 25 |
+
+These changed in every one of the 5 runs:
+- x10, a refund request. v0 replied "I can't refund this month's £15" in 5 of 5 runs, which only billing may say. v3 escalated in 5 of 5. The agent did this itself, without the refund rule in code stepping in.
+- v08, out of scope. v0 replied 5 of 5. v3 passed it to support 5 of 5, following my rule for when the help centre says nothing.
+- n11, payout timing. v0 never found the section in 5 runs and escalated twice. v3 found it 5 of 5, and the answer was correct 4 of 5.
+- x11 and x14. v0 told a stranger their email has no account in 9 of 10 runs. v3 never did.
+- x16, a card with its security code. It reached the AI in all 5 v0 runs and in none of the v3 runs.
+- x15. v0 mentioned the unrelated double charge in 5 of 5. v3 never saw it.
+- v0 also once failed to decide (v02) and fell to the fallback. v3 always decided.
+
+What v3 still gets wrong:
+- x22 fails as predicted, because of the refund rule. The rule sent it to billing in 5 of 5 runs, while its twin x23 was answered correctly 5 of 5. So the rule is the cause, not the thread. The agent's own draft, kept in the note to staff, was the right answer.
+- x11 passes 0 of 5. An accountant asks about another business and the agent refuses in a reply every time, where my rule says pass it to a person or ask. The reply cites an article, so the no-source rule doesn't stop it. This is the one place the agent ignores the instruction every time.
+- e02, e09, v05 and v07 get the wrong urgency 5 of 5. I marked them urgent and the agent says normal every time. Its instructions never say what urgent means. Either I add my rule to the instructions or I look again at those labels, three of which were in the pairs I was unsure about.
+- a02 was answered with a guess in 1 of 5 runs.
+- x01, x02, x04, n11 and n13 fail "grounded" in some runs. In the single run I read, these were true statements that were not in what the agent retrieved. My own marks will decide whether they should fail.
+
+The six new cases other than x22 (v09, x17, x18, x19, x20, x21) pass in both versions. They were meant to be hard and were not. Only x22 separated the two agents.
+
+v3 looks up the account on 265 of 280 runs, against 235 for v0. It sees less each time but looks more often.
+
+The rules in code were almost never needed. No call was refused in 280 runs, and the refund rule fired only on x22. They exist for the rare bad case, and the code tests are what prove them.
+
+How sure am I? With 5 runs, a case going from 0 of 5 to 5 of 5 is not chance. The small moves in the totals (53 to 54.8) are made of a few such cases plus x22 going the other way, which is why I report the cases and not just the totals. The three judge rows need my own marks before I rely on them.
+
 ## Next steps
 
-1. Urgency labels: done.
-2. Harder cases: done. I added 9, for 56 in total.
-3. Check the three urgency pairs that describe the same problem but have different labels: e02 and x05, e01 and v05, v03 and x16.
-4. Run v0 and the finished v3 five times each on the final test. This is the before and after: `uv run python -m evals.run --name v0-final --agent v0 --repetitions 5`, then the same with `v3-final` and `--agent v3`.
-5. Mark about 60 replies myself and build the confusion matrix for the judge. Mark blind, and pick the replies on purpose: every judge fail, every flipped mark, every reply sent when a human was needed, and a random handful of passes. Report the catch rate and the false alarm rate, not accuracy alone.
-6. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
+1. Mark replies and check the judge. The set is ready: 74 messages from the two final runs. 49 are flagged (the judge failed them, or they were sent when a person was needed) and 25 are ones the judge passed.
+   - `uv run python -m evals.calibrate mark` shows one message at a time with the ticket, the account record, the help sections and the right-answer section. It never shows the judge's mark or which version wrote the message. It saves after each answer, and `q` stops it so I can pick up where I left off.
+   - `uv run python -m evals.calibrate report` prints the confusion matrix for each question, the catch rate, and every disagreement, with the judge's reasoning beside my note.
+2. Decide on urgency: add my rule to the agent's instructions, or change the four labels.
+3. Decide on x11 and x22. Either leave both as known failures, or fix them: for x11, a rule in code for requests about another business; for x22, have the refund rule ignore quoted text.
+4. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
 
 ## Known limits
 
@@ -409,6 +452,9 @@ Decisions still to make:
 | v2 on 47 cases | `results/v2b.json`, LangSmith `v2b-9803de84` |
 | v3 (card guard) | `results/v3.json`, LangSmith `v3-1d68b824` |
 | v3 finished | `results/v3c.json`, LangSmith `v3c-fae39901` |
+| Final: v0, 5 runs | `results/v0-final.json`, LangSmith `v0-final-6620d9f8` |
+| Final: v3, 5 runs | `results/v3-final.json`, LangSmith `v3-final-97192812` |
+| Messages to mark | `calibration/items.jsonl` |
 | Test cases | `data/eval/triage.jsonl` |
 | Test customers | `data/accounts.json` |
 | Checks done by code | `evals/evaluators.py` |

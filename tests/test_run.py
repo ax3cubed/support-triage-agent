@@ -133,3 +133,41 @@ def test_a_clarifying_question_is_judged_for_grounding_and_privacy_but_not_helpf
 
     assert "<message_type>clarifying question</message_type>" in fake.prompts[0]
     assert [r["key"] for r in results] == ["grounded", "account_status_private"]
+
+
+def test_the_confusion_table_counts_misses_and_false_alarms_and_looks_past_plain_accuracy():
+    from evals.calibrate import confusion
+
+    # (human, judge): 1 is pass, 0 is fail. The person failed 4; the judge caught 1, missed 3 and raised 1 false alarm.
+    pairs = [(0, 0)] + [(0, 1)] * 3 + [(1, 0)] + [(1, 1)] * 15
+
+    stats = confusion(pairs)
+
+    assert (stats["caught"], stats["missed"], stats["false_alarm"], stats["agreed_pass"]) == (1, 3, 1, 15)
+    assert stats["accuracy"] == 0.8
+    assert stats["catch_rate"] == 0.25
+    assert stats["judge_fails_that_were_right"] == 0.5
+    assert stats["kappa"] < 0.3
+
+
+def test_sampling_keeps_every_flagged_message_and_hides_nothing_needed_to_mark(tmp_path, monkeypatch):
+    import json
+
+    from evals import calibrate
+
+    def row(case_id, message, grounded, action_correct=1):
+        outputs = {"action": "reply", "message": message, "retrieved_context": "ctx", "account_context": "acct"}
+        scores = {"grounded": grounded, "action_correct": action_correct}
+        inputs = {"from_email": "a@b.example", "subject": "s", "body": "b"}
+        return {"case_id": case_id, "inputs": inputs, "outputs": outputs, "expected": {}, "scores": scores, "comments": {}}
+
+    rows = [row("n01", "bad", 0), row("n02", "sent when a person was needed", 1, action_correct=0)]
+    rows += [row(f"p{i}", f"fine {i}", 1) for i in range(10)] + [row("n01", "bad", 0)]
+    (tmp_path / "run.json").write_text(json.dumps({"rows": rows}), encoding="utf-8")
+    monkeypatch.setattr(calibrate, "RESULTS_DIR", tmp_path)
+
+    items = calibrate.sample(["run"], passes=3, seed=1)
+
+    assert len(items) == 5
+    assert {item["case_id"] for item in items} >= {"n01", "n02"}
+    assert all(item["account_context"] == "acct" and item["retrieved_context"] == "ctx" for item in items)
