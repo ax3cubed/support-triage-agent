@@ -99,6 +99,19 @@ SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True, "v4": True}
 #   say whether the last payment failed, without amounts
 # - errors and silence end in a hand-over that carries the ticket, not in a lost ticket
 HARDENED = {"v0": False, "v1": False, "v2": False, "v3": True, "v4": True}
+VERSIONS = tuple(PROMPTS)
+# What runs when no version is named. v0 to v2 are kept for comparison only and must be asked for.
+LATEST = VERSIONS[-1]
+assert HARDENED[LATEST] and set(VERSIONS) == set(HARDENED) == set(SPLIT_BILLING)
+
+
+def check_version(version: str) -> str:
+    """Return the version if it exists; otherwise say which ones do."""
+    if version not in VERSIONS:
+        raise ValueError(f"unknown agent version {version!r}; choose one of {', '.join(VERSIONS)}")
+    return version
+
+
 ACTION_CLASSES = {"send_reply": send_reply, "escalate_to_human": escalate_to_human, "ask_customer": ask_customer}
 # Most cautious first: used when the model calls more than one action in a step.
 CAUTION_ORDER = ["escalate_to_human", "ask_customer", "send_reply"]
@@ -155,8 +168,9 @@ class TriageState(TypedDict, total=False):
     decision: dict
 
 
-def build_graph(model: BaseChatModel | None = None, version: str = "v0"):
+def build_graph(model: BaseChatModel | None = None, version: str = LATEST):
     """Compile one version of the agent. Pass a model to override the configured one (tests pass a scripted model)."""
+    check_version(version)
     llm = (model or init_chat_model(AGENT_MODEL)).bind_tools(tools_for(version))
     system_prompt = PROMPTS[version]
     split_billing = SPLIT_BILLING[version]
@@ -406,13 +420,13 @@ def summarise(state: TriageState) -> dict:
 
 def initial_state(ticket: Ticket, version: str) -> dict:
     """The state a run starts from. From v3 the ticket is checked and cleaned here, before anything is traced."""
-    if not HARDENED[version]:
+    if not HARDENED[check_version(version)]:
         raw = f"{ticket['from_email']}\n{ticket['subject']}\n{ticket['body']}"
         return {"ticket": ticket, "card_in_ticket": bool(find_card_numbers_strict(raw))}
-    # A missing or odd field must not crash the run, and a line break in the address must not let
-    # the sender forge extra header lines in what the model reads.
+    # A missing or odd field must not crash the run, and a line break in the address or the subject
+    # must not let the sender forge extra header lines in what the model reads.
     sender = " ".join(str(ticket.get("from_email") or "").split())[:200]
-    subject = str(ticket.get("subject") or "")[:300]
+    subject = " ".join(str(ticket.get("subject") or "").split())[:300]
     body = str(ticket.get("body") or "")[:MAX_TICKET_CHARS]
     clean_sender, _ = redact_strict(sender)
     clean_subject, subject_count = redact_strict(subject)
@@ -424,7 +438,7 @@ def initial_state(ticket: Ticket, version: str) -> dict:
     }
 
 
-def triage(ticket: Ticket, model: BaseChatModel | None = None, version: str = "v0") -> dict:
+def triage(ticket: Ticket, model: BaseChatModel | None = None, version: str = LATEST) -> dict:
     """Run one ticket through the agent and return its decision record."""
     graph = build_graph(model, version)
     config = {"run_name": "triage", "metadata": {"agent_version": version}}

@@ -4,8 +4,16 @@ import os
 
 from langchain_core.messages import AIMessage
 
-# Tests never send traces, whatever the developer has in .env.
-os.environ["LANGSMITH_TRACING"] = "false"
+# Tests never talk to LangSmith, whatever the developer has in the shell or in .env. Turning tracing
+# off is not enough: `evaluate` traces anyway when it finds a key (see evals.run.run_experiment). The keys are
+# set to empty and not removed, because load_dotenv would put a removed one back.
+for _name in ("LANGSMITH_TRACING", "LANGSMITH_TRACING_V2", "LANGCHAIN_TRACING", "LANGCHAIN_TRACING_V2"):
+    os.environ[_name] = "false"
+for _name in ("LANGSMITH_API_KEY", "LANGCHAIN_API_KEY"):
+    os.environ[_name] = ""
+# If something slips past both, it fails against a closed local port and never leaves the machine.
+for _name in ("LANGSMITH_ENDPOINT", "LANGCHAIN_ENDPOINT"):
+    os.environ[_name] = "http://127.0.0.1:9"
 
 
 class ScriptedModel:

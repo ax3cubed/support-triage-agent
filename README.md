@@ -41,7 +41,7 @@ flowchart LR
 
 | Tool | Kind | What it does |
 |---|---|---|
-| `search_help_center` | retrieval | BM25 over the help-centre articles in `data/kb`, split by section. From v3 it matches word roots |
+| `search_help_center` | retrieval | BM25 over the help-centre articles in `src/triage/data/kb`, split by section. From v3 it matches word roots |
 | `lookup_account` | lookup | The sender's plan, role and subscription. In v0 it also returned every recent charge |
 | `get_recent_charges` | lookup | From v1: the sender's recent charges, for tickets that are about a charge or refund |
 | `send_reply` | action | Sends a reply with the articles it cites |

@@ -7,9 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# The help centre and the test accounts ship inside the package, so an installed wheel has them.
+DATA_DIR = Path(__file__).resolve().parent / "data"
+KB_DIR = DATA_DIR / "kb"
+ACCOUNTS_FILE = DATA_DIR / "accounts.json"
+# The source checkout: the evaluation dataset, results and calibration files live here, not in the wheel.
 ROOT = Path(__file__).resolve().parents[2]
-KB_DIR = ROOT / "data" / "kb"
-ACCOUNTS_FILE = ROOT / "data" / "accounts.json"
 
 AGENT_MODEL = os.environ.get("TRIAGE_MODEL", "anthropic:claude-sonnet-5-5")
 JUDGE_MODEL = os.environ.get("TRIAGE_JUDGE_MODEL", "anthropic:claude-opus-5-5")

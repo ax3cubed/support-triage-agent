@@ -8,19 +8,52 @@ import argparse
 import json
 from collections import defaultdict
 
-from langsmith import Client, evaluate
+from langsmith import Client, evaluate, tracing_context
 
 from evals.dataset import load_cases, local_examples, sync_to_langsmith
 from evals.evaluators import deterministic_checks
 from evals.judge import reply_judge
-from triage.agent import triage
+from triage.agent import LATEST, VERSIONS, triage
 from triage.config import AGENT_MODEL, JUDGE_MODEL, ROOT
+from triage.redact import find_card_numbers_strict
 
 RESULTS_DIR = ROOT / "results"
 
 
-# A run that crashed made no decision at all, so it fails the checks every case is scored on.
+# A run that crashed made no decision at all, so it fails these whatever else is true of it.
 CRASH_SCORES = {"safe_action": 0, "action_correct": 0, "reached_decision": 0}
+
+
+def crash_scores(inputs: dict, expected: dict) -> dict:
+    """Scores for a run that raised: every check that applies to the case, scored on an empty answer.
+
+    Without this a crashed case drops out of checks like no_card_number and retrieval_hit, and their
+    averages are taken over fewer cases than the run had. Nothing was written, so no_card_number
+    passes; nothing is known about what the model saw, so a card in the ticket counts as having reached it.
+    """
+    card = bool(find_card_numbers_strict("\n".join(str(value) for value in (inputs or {}).values())))
+    empty = {
+        "action": "error", "category": None, "team": None, "priority": None, "message": "", "cited_doc_ids": [],
+        "retrieved_doc_ids": [], "retrieved_sections": [], "tool_calls": [], "saw_charges": False,
+        "card_in_ticket": card, "card_reached_model": card, "gave_up": True,
+    }  # fmt: skip
+    return {**{result["key"]: result["score"] for result in deterministic_checks(empty, expected or {})}, **CRASH_SCORES}
+
+
+def run_experiment(target, data, evaluators: list, upload: bool, **options):
+    """`langsmith.evaluate`, with one repair: a run that uploads nothing really sends nothing.
+
+    With upload_results=False LangSmith sets tracing to "local", which LangChain reads as on, so the
+    agent's own trace (the ticket included) was still posted whenever a key was set.
+    """
+    if not upload:
+        inner = target
+
+        def target(inputs: dict) -> dict:
+            with tracing_context(enabled=False):
+                return inner(inputs)
+
+    return evaluate(target, data=data, evaluators=evaluators, upload_results=upload, **options)
 
 
 def collect_rows(experiment) -> list[dict]:
@@ -38,7 +71,7 @@ def collect_rows(experiment) -> list[dict]:
                 "expected": item["example"].outputs,
                 "outputs": item["run"].outputs,
                 "error": item["run"].error,
-                "scores": dict(CRASH_SCORES) if item["run"].error else scores,
+                "scores": crash_scores(item["example"].inputs, item["example"].outputs) if item["run"].error else scores,
                 "comments": {r.key: r.comment for r in results if r.comment},
             }
         )
@@ -84,7 +117,7 @@ def summarise(rows: list[dict]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate the triage agent.")
     parser.add_argument("--name", required=True, help="Experiment name, e.g. baseline or v1.")
-    parser.add_argument("--agent", default="v0", help="Agent version to test: v0 to v4.")
+    parser.add_argument("--agent", default=LATEST, choices=VERSIONS, help=f"Agent version to test (default: {LATEST}).")
     parser.add_argument("--local", action="store_true", help="Do not upload the dataset or results to LangSmith.")
     parser.add_argument("--no-judge", action="store_true", help="Skip the LLM judge (deterministic checks only).")
     parser.add_argument("--repetitions", type=int, default=1, help="Run each case this many times to see variance.")
@@ -100,15 +133,15 @@ def main() -> None:
     else:
         data = sync_to_langsmith(Client(), cases)
 
-    experiment = evaluate(
+    experiment = run_experiment(
         lambda inputs: triage(inputs, version=args.agent),
-        data=data,
-        evaluators=[deterministic_checks] if args.no_judge else [deterministic_checks, reply_judge],
+        data,
+        [deterministic_checks] if args.no_judge else [deterministic_checks, reply_judge],
+        upload=not (args.local or args.only),
         experiment_prefix=args.name,
         metadata={"agent_version": args.agent, "agent_model": AGENT_MODEL, "judge_model": JUDGE_MODEL},
         num_repetitions=args.repetitions,
         max_concurrency=4,
-        upload_results=not (args.local or args.only),
     )
 
     rows = collect_rows(experiment)

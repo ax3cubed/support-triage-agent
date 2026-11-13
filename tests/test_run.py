@@ -1,11 +1,10 @@
 from conftest import ScriptedModel
-from langsmith import evaluate
 
 from evals.dataset import load_cases, local_examples
 from evals.evaluators import deterministic_checks
 from evals.judge import reply_judge
 from evals.report import changed_cases, failures
-from evals.run import case_scores, collect_rows, summarise
+from evals.run import case_scores, collect_rows, run_experiment, summarise
 from triage.agent import triage
 
 
@@ -17,9 +16,9 @@ def test_a_local_run_scores_each_case_and_summarises_by_slice():
             [("search_help_center", {"query": "automatic reminders"})],
             [("send_reply", {"category": "product", "body": "Settings › Reminders.", "cited_doc_ids": ["reminders"]})],
         )
-        return triage(inputs, model=model)
+        return triage(inputs, model=model, version="v0")  # v0 has no refund rule, so the unsafe reply goes out
 
-    experiment = evaluate(always_replies, data=local_examples(cases), evaluators=[deterministic_checks], upload_results=False)
+    experiment = run_experiment(always_replies, local_examples(cases), [deterministic_checks], upload=False)
     rows = collect_rows(experiment)
 
     assert [row["case_id"] for row in rows] == ["e01", "n01"]
@@ -35,7 +34,7 @@ def test_the_judge_skips_escalations_without_an_evaluator_error(caplog):
         args = {"category": "billing", "team": "billing", "priority": "normal", "summary": "Refund request."}
         return triage(inputs, model=ScriptedModel([("escalate_to_human", args)]))
 
-    experiment = evaluate(always_escalates, data=local_examples(cases), evaluators=[reply_judge], upload_results=False)
+    experiment = run_experiment(always_escalates, local_examples(cases), [reply_judge], upload=False)
     rows = collect_rows(experiment)
 
     assert rows[0]["scores"] == {}
@@ -83,11 +82,68 @@ def test_a_crashed_run_counts_as_a_failure_not_a_gap():
     def crashes(inputs: dict) -> dict:
         raise TimeoutError("provider down")
 
-    experiment = evaluate(crashes, data=local_examples(cases), evaluators=[deterministic_checks], upload_results=False)
+    experiment = run_experiment(crashes, local_examples(cases), [deterministic_checks], upload=False)
     rows = collect_rows(experiment)
 
     assert rows[0]["error"]
     assert summarise(rows)["all"]["safe_action"] == {"mean": 0.0, "n": 1}
+    # The crash stays in the count of every check that applies to the case, whatever the agent did.
+    scores = rows[0]["scores"]
+    assert scores["no_card_number"] == 1 and scores["reached_decision"] == 0 and scores["action_correct"] == 0
+
+
+def test_a_crash_on_a_ticket_with_a_card_counts_the_card_as_seen_by_the_model():
+    from evals.run import crash_scores
+
+    scores = crash_scores({"from_email": "a@b.example", "subject": "Card", "body": "4242 4242 4242 4242"}, {"action": "escalate"})
+
+    assert scores["card_hidden_from_model"] == 0 and scores["safe_action"] == 0
+
+
+def test_a_run_that_uploads_nothing_sends_no_trace_of_the_agent_either(monkeypatch):
+    import langsmith
+
+    sent = []
+    monkeypatch.setenv("LANGSMITH_API_KEY", "a-key-is-set")
+    monkeypatch.setattr(langsmith.Client, "create_run", lambda self, *a, **k: sent.append("create"))
+    monkeypatch.setattr(langsmith.Client, "update_run", lambda self, *a, **k: sent.append("update"))
+    cases = [case for case in load_cases() if case["id"] == "e01"]
+
+    def escalates(inputs: dict) -> dict:
+        args = {"category": "billing", "team": "billing", "priority": "normal", "summary": "Refund request."}
+        return triage(inputs, model=ScriptedModel([("escalate_to_human", args)]))
+
+    rows = collect_rows(run_experiment(escalates, local_examples(cases), [deterministic_checks], upload=False))
+
+    assert rows[0]["outputs"]["action"] == "escalate" and sent == []
+
+
+def test_syncing_updates_a_case_whose_metadata_alone_changed_and_clears_strays():
+    from types import SimpleNamespace
+
+    from evals.dataset import as_examples, sync_to_langsmith
+
+    cases = [case for case in load_cases() if case["id"] in ("n01", "e01")]
+    n01, e01 = sorted(as_examples(cases), key=lambda example: example["metadata"]["case_id"], reverse=True)
+    stored = [
+        SimpleNamespace(id=1, inputs=n01["inputs"], outputs=n01["outputs"], metadata={**n01["metadata"], "note": "old"}),
+        SimpleNamespace(
+            id=2, inputs=e01["inputs"], outputs=e01["outputs"], metadata={**e01["metadata"], "dataset_split": ["base"]}
+        ),
+        SimpleNamespace(id=3, inputs={}, outputs={}, metadata=None),
+    ]
+    calls = []
+    client = SimpleNamespace(
+        has_dataset=lambda **_: True,
+        list_examples=lambda **_: stored,
+        create_examples=lambda **kwargs: calls.append(("create", kwargs)),
+        update_example=lambda example_id, **kwargs: calls.append(("update", example_id)),
+        delete_examples=lambda example_ids: calls.append(("delete", example_ids)),
+    )
+
+    sync_to_langsmith(client, cases)
+
+    assert calls == [("update", 1), ("delete", [3])]
 
 
 class _FakeJudge:

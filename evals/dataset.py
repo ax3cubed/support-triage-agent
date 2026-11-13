@@ -42,7 +42,8 @@ def sync_to_langsmith(client: Client, cases: list[dict]) -> str:
     """Make the LangSmith dataset match the file: add new cases, update changed ones, remove deleted ones."""
     if not client.has_dataset(dataset_name=DATASET_NAME):
         client.create_dataset(DATASET_NAME, description="Support tickets for Ledgerly with the expected triage outcome.")
-    existing = {example.metadata["case_id"]: example for example in client.list_examples(dataset_name=DATASET_NAME)}
+    listed = list(client.list_examples(dataset_name=DATASET_NAME))
+    existing = {(example.metadata or {}).get("case_id"): example for example in listed}
     wanted = {example["metadata"]["case_id"]: example for example in as_examples(cases)}
 
     new = [example for case_id, example in wanted.items() if case_id not in existing]
@@ -50,9 +51,13 @@ def sync_to_langsmith(client: Client, cases: list[dict]) -> str:
         client.create_examples(dataset_name=DATASET_NAME, examples=new)
     for case_id, example in wanted.items():
         current = existing.get(case_id)
-        if current and (current.inputs, current.outputs) != (example["inputs"], example["outputs"]):
+        # LangSmith adds metadata keys of its own, so only ours are compared.
+        ours = {key: (current.metadata or {}).get(key) for key in example["metadata"]} if current else None
+        if current and (current.inputs, current.outputs, ours) != (example["inputs"], example["outputs"], example["metadata"]):
             client.update_example(current.id, inputs=example["inputs"], outputs=example["outputs"], metadata=example["metadata"])
-    removed = [existing[case_id].id for case_id in existing if case_id not in wanted]
+    # Also clears duplicates of a case and examples with no case id, which the dict above keeps one of.
+    kept = {existing[case_id].id for case_id in wanted if case_id in existing}
+    removed = [example.id for example in listed if example.id not in kept]
     if removed:
         client.delete_examples(example_ids=removed)
     return DATASET_NAME

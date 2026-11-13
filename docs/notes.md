@@ -25,7 +25,7 @@ An AI coding assistant wrote the first version and I reviewed it.
 
 - The agent is a LangGraph loop. It hides payment details, then the AI calls tools until it picks an action.
 - It has five tools: search the help centre, look up the sender's account, and three actions (reply, escalate, ask).
-- Search is the RAG step. It covers 12 help articles in `data/kb`, split into sections and ranked by word matching (BM25), with no embeddings. I chose it because it needs no extra key and gives the same result every time. Its weakness is that it only matches exact words.
+- Search is the RAG step. It covers 12 help articles in `src/triage/data/kb`, split into sections and ranked by word matching (BM25), with no embeddings. I chose it because it needs no extra key and gives the same result every time. Its weakness is that it only matches exact words.
 - Three limits live in code rather than in the instructions:
   - Card numbers, CVVs and bank details are removed before the AI sees the ticket.
   - The account tool takes no input, so it can only return the sender's own account.
@@ -576,7 +576,7 @@ These eight are real but too big to fix here. I will list them in the write-up.
 | v4, urgency rule, 5 runs | `results/v4.json`, LangSmith `v4-86f44895` |
 | Messages to mark | `calibration/items.jsonl`, my marks in `calibration/human_marks.jsonl` |
 | Test cases | `data/eval/triage.jsonl` |
-| Test customers | `data/accounts.json` |
+| Test customers | `src/triage/data/accounts.json` |
 | Checks done by code | `evals/evaluators.py` |
 | Judge instructions | `evals/judge.py` |
 | Agent instructions for each version | `src/triage/prompts.py` |

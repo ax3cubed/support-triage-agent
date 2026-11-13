@@ -1,4 +1,4 @@
-"""Help-centre retrieval: the markdown files in data/kb, split by section and ranked with BM25.
+"""Help-centre retrieval: the markdown files in the package's data/kb, split by section and ranked with BM25.
 
 BM25 needs no embedding key and returns the same ranking every run, which keeps the retrieval
 evaluation deterministic. Its weakness is vocabulary: a question that shares no words with the

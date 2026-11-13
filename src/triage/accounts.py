@@ -1,4 +1,4 @@
-"""Account lookup. A stand-in for the product's database: reads data/accounts.json."""
+"""Account lookup. A stand-in for the product's database: reads the bundled data/accounts.json."""
 
 import json
 from functools import lru_cache

@@ -12,7 +12,7 @@ import json
 
 from evals.dataset import load_cases
 from evals.evaluators import deterministic_checks
-from evals.run import RESULTS_DIR, summarise
+from evals.run import RESULTS_DIR, crash_scores, summarise
 
 JUDGE_KEYS = {"grounded", "correct", "helpful", "account_status_private"}
 
@@ -21,12 +21,15 @@ def rescore(run: dict, cases: dict[str, dict]) -> int:
     """Update every row in place. Returns how many scores changed."""
     changed = 0
     for row in run["rows"]:
-        if row["error"] or row["case_id"] not in cases:
+        if row["case_id"] not in cases:
             continue
         expected = cases[row["case_id"]]["expected"]
-        judged = {key: score for key, score in row["scores"].items() if key in JUDGE_KEYS}
-        fresh = {result["key"]: result["score"] for result in deterministic_checks(row["outputs"], expected)}
-        new_scores = {**fresh, **judged}
+        if row["error"]:
+            new_scores = crash_scores(row.get("inputs"), expected)
+        else:
+            judged = {key: score for key, score in row["scores"].items() if key in JUDGE_KEYS}
+            fresh = {result["key"]: result["score"] for result in deterministic_checks(row["outputs"], expected)}
+            new_scores = {**fresh, **judged}
         changed += sum(new_scores.get(key) != row["scores"].get(key) for key in set(new_scores) | set(row["scores"]))
         row["scores"], row["expected"] = new_scores, expected
     run["summary"] = summarise(run["rows"])

@@ -31,7 +31,7 @@ def test_account_lookup_only_returns_the_senders_account():
         [("escalate_to_human", {"category": "account_security", "team": "security", "priority": "normal", "summary": "x"})],
     )
 
-    triage(stranger, model=model)
+    triage(stranger, model=model, version="v0")
 
     tool_result = model.seen[1][-1].content
     assert "No Ledgerly account" in tool_result
