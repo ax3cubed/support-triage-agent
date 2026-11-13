@@ -21,7 +21,7 @@ from langchain.chat_models import init_chat_model
 from pydantic import BaseModel, Field
 
 from triage import kb
-from triage.config import JUDGE_MODEL
+from triage.config import JUDGE_MODEL, MAX_TICKET_CHARS
 from triage.redact import redact_strict
 
 JUDGE_PROMPT = """You are reviewing a message that an AI support assistant sent to a customer of Ledgerly, an invoicing product.
@@ -104,18 +104,33 @@ def _judge():
     return init_chat_model(JUDGE_MODEL).with_structured_output(Verdict, method="json_schema")
 
 
+def _as_data(text: object, limit: int, one_line: bool = False) -> str:
+    """Make text that someone else wrote safe to place between the prompt's tags.
+
+    Everything the judge reads about a ticket comes from a customer or from a model that read the
+    customer: the sender, the subject, the body and the agent's own message. Left raw, a ticket
+    could close a tag early and write its own "verdict" or instructions after it. So `<` is
+    escaped, which leaves no way to open or close a tag; the sender and subject are held to one
+    line, so they cannot add header lines; and each field is cut to a fixed length.
+    """
+    text = str(text or "")
+    if one_line:
+        text = " ".join(text.split())
+    return redact_strict(text[:limit])[0].replace("<", "&lt;")
+
+
 def build_prompt(inputs: dict, outputs: dict, reference_outputs: dict) -> str:
     """The full text sent to the judge for one message."""
     answers = [kb.section_text(section) for section in reference_outputs.get("sections", [])]
     return JUDGE_PROMPT.format(
-        from_email=inputs["from_email"],
-        subject=redact_strict(inputs["subject"])[0],
-        body=redact_strict(inputs["body"])[0],
+        from_email=_as_data(inputs.get("from_email"), 200, one_line=True),
+        subject=_as_data(inputs.get("subject"), 300, one_line=True),
+        body=_as_data(inputs.get("body"), MAX_TICKET_CHARS),
         message_type="clarifying question" if outputs["action"] == "ask_customer" else "reply",
-        context=outputs["retrieved_context"] or "(nothing was retrieved)",
-        account=outputs.get("account_context") or "(no account was looked up)",
+        context=_as_data(outputs["retrieved_context"], 20000) or "(nothing was retrieved)",
+        account=_as_data(outputs.get("account_context"), 4000) or "(no account was looked up)",
         answer="\n\n".join(answer for answer in answers if answer) or "(none given)",
-        message=outputs["message"],
+        message=_as_data(outputs["message"], MAX_TICKET_CHARS),
     )
 
 
