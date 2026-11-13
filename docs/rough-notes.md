@@ -420,6 +420,40 @@ The rules in code were almost never needed. No call was refused in 280 runs, and
 
 How sure am I? With 5 runs, a case going from 0 of 5 to 5 of 5 is not chance. The small moves in the totals (53 to 54.8) are made of a few such cases plus x22 going the other way, which is why I report the cases and not just the totals. The three judge rows need my own marks before I rely on them.
 
+## Step 18. Marking replies to check the judge
+
+I am marking 74 messages myself and then comparing my marks with the judge's. The tool shows one message at a time with the ticket, the account record, the help sections the agent found and, for some, the section that holds the right answer. It hides the judge's mark and which agent version wrote the message, so neither can sway me.
+
+What each question means:
+
+| Question | What I ask myself | Asked when |
+|---|---|---|
+| Grounded | Did it say anything about Ledgerly that it had no source for? | Every message |
+| Correct | Does the answer agree with the right-answer section? | Replies where that section is shown |
+| Helpful | Does it answer what was asked, say what to do next, and read like something I would send? | Replies |
+| Private | Does it avoid revealing whether an account exists? | Senders with no account |
+
+I wrote down my marking rules first so I apply the same standard to every message:
+
+1. Grounded means nothing made up. It does not mean "did the agent look things up". I pick out each fact the message states about Ledgerly and check it against the help sections and the account record.
+2. A message with no facts passes. Questions, apologies and courtesy need no source. A clarifying question that only asks for details is grounded even when the agent searched nothing.
+3. True but not retrieved is a fail. If a statement is correct but was not in what the agent found, I mark it not grounded. From the reply alone I can't tell a true unsourced statement from a false one, and an agent allowed to say unsourced things that happen to be true will also say unsourced things that are false.
+4. Each question is judged on its own. A reply can fail grounded on one sentence and still be correct and helpful.
+5. I write a short reason for every fail, so I can read it next to the judge's reason later.
+
+Findings while marking:
+
+- Message 1 is a clarifying question (case a01). The ticket says "It's not working. Please fix it." The agent asked what Alice was trying to do and for the wording of the error, and looked nothing up. My first thought was that it couldn't be grounded with no sources, but that was the wrong test. The message states no facts about Ledgerly, so there is nothing to source, and I marked it grounded. An empty search is fine when the message makes no claims, and not searching was the right move for a ticket with nothing to search for.
+- Message 2 is a reply (case x04). Frank's reminders and bank sync stopped. The reply explains the failed payment, the move to Free and how to restore Pro, all of which is in the sections or the account record. One sentence is not: "You may need to update your card first if the old one was the problem." Nothing the agent found mentions updating a card. The help centre does have an article on it, so the sentence is true, but the agent did not retrieve it. I marked it not grounded under rule 3. Everything else in the reply is accurate.
+
+Message 2 follows the same pattern as most of the judge's "grounded" fails in the final runs (x01, x02, x04, n13): a true statement that was not in what the agent retrieved. So my strict rule and the judge may well agree, and the comparison will show whether they do.
+
+Points for the interview:
+- The hardest part of checking a judge is settling my own standard first. Until I wrote rule 3 down, I could not have marked consistently.
+- Grounded and true are different things. A reply can be true and ungrounded (message 2), or grounded and wrong (the earlier n11 reply, which followed a search that missed the right section).
+- A strict rule fails helpful, accurate sentences. The fix for that is better search, so the agent has the source, not a looser rule.
+- One sentence can fail a whole reply. That is harsh, and a finer score, such as a count of unsourced statements, would say more than pass or fail.
+
 ## Next steps
 
 1. Mark replies and check the judge. The set is ready: 74 messages from the two final runs. 49 are flagged (the judge failed them, or they were sent when a person was needed) and 25 are ones the judge passed.
