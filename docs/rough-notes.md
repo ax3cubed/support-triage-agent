@@ -523,12 +523,26 @@ x11 is still the weak case. In v4 the agent replied in 4 of 5 runs and asked a q
 
 Which version is final? v3 is the one compared with v0 over five runs, and it carries every safety change. v4 adds a rule that fixes one case and breaks another. I treat v3 as the result and v4 as a last experiment that shows how an instruction can cut both ways.
 
+## Step 22. Three urgency labels changed, and the runs re-scored
+
+I changed e02, v05 and v07 from urgent to normal. They are refund requests, and by my own rule a refund is not urgent. v05 was the clearest mistake: it is the same request as e01, which I had marked normal, only worded more firmly.
+
+I did not run anything again. Urgency is a code check, so I re-applied the code checks to the saved answers of the three final runs (`evals/rescore.py`). The agent's answers and the judge's marks were not touched. Each results file records that it was re-scored and why. 15 scores changed in each file: 3 cases times 5 runs.
+
+| Right urgency | v0 | v3 | v4 |
+|---|---|---|---|
+| Before the label change | 18.2 of 23 | 20.8 of 25 | 21 of 25 |
+| After | 21.2 of 23 | 23.8 of 25 | 24 of 25 |
+
+What is still wrong on urgency: e09 in v0 and v3 (a missing payout marked normal), v09 in v4 (pressure read as a deadline), and x20 in v0 (a formal legal request marked urgent 4 times in 5).
+
+No other number in Step 17 changes.
+
 ## Next steps
 
 1. Check the judge. Done, see Step 19. My marks are in `calibration/human_marks.jsonl`.
 2. Run the urgency rule. Done, see Step 21.
-3. Look again at three urgency labels (e02, v05, v07) that my own test would call normal.
-4. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
+3. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
 
 ## Known limits
 
@@ -546,8 +560,6 @@ These eight are real but too big to fix here. I will list them in the write-up.
 ## Open items
 
 Decisions still to make:
-
-- [ ] Urgency labels on e02, v05 and v07: keep them urgent, or change them to normal to match my own test?
 
 ## Where the evidence is
 

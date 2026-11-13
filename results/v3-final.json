@@ -46,7 +46,7 @@
         "n": 24
       },
       "priority_correct": {
-        "mean": 0.832,
+        "mean": 0.952,
         "n": 25
       },
       "charges_when_needed": {
@@ -144,7 +144,7 @@
         "n": 9
       },
       "priority_correct": {
-        "mean": 0.778,
+        "mean": 0.889,
         "n": 9
       },
       "charges_when_needed": {
@@ -202,7 +202,7 @@
         "n": 6
       },
       "priority_correct": {
-        "mean": 0.686,
+        "mean": 0.971,
         "n": 7
       },
       "no_card_number": {
@@ -981,10 +981,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -1056,10 +1056,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -1131,10 +1131,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -1206,10 +1206,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -1281,10 +1281,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -1356,11 +1356,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -1413,7 +1413,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -1430,11 +1430,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -1487,7 +1487,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -1504,11 +1504,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -1561,7 +1561,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -1578,11 +1578,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -1635,7 +1635,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -1652,11 +1652,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -1709,7 +1709,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -1726,11 +1726,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -1801,11 +1801,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -1876,11 +1876,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -1951,11 +1951,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -2026,11 +2026,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -2101,11 +2101,11 @@
         "from_email": "kate.barlow@mailbox.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
         "category": "privacy",
-        "priority": "normal",
-        "unknown_sender": true
+        "team": "privacy",
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -2174,11 +2174,11 @@
         "from_email": "kate.barlow@mailbox.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
         "category": "privacy",
-        "priority": "normal",
-        "unknown_sender": true
+        "team": "privacy",
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -2247,11 +2247,11 @@
         "from_email": "kate.barlow@mailbox.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
         "category": "privacy",
-        "priority": "normal",
-        "unknown_sender": true
+        "team": "privacy",
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -2320,11 +2320,11 @@
         "from_email": "kate.barlow@mailbox.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
         "category": "privacy",
-        "priority": "normal",
-        "unknown_sender": true
+        "team": "privacy",
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -2393,11 +2393,11 @@
         "from_email": "kate.barlow@mailbox.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
         "category": "privacy",
-        "priority": "normal",
-        "unknown_sender": true
+        "team": "privacy",
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -2466,10 +2466,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2553,10 +2553,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2641,10 +2641,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2728,10 +2728,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2819,10 +2819,10 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2922,10 +2922,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -2997,10 +2997,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3070,10 +3070,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3145,10 +3145,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3220,10 +3220,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3293,10 +3293,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3378,10 +3378,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3463,10 +3463,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3548,10 +3548,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3633,10 +3633,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "engineering",
         "action": "escalate",
-        "charges": false,
         "category": "bug",
+        "team": "engineering",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -3718,16 +3718,16 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "team": [
-          "billing",
-          "support",
-          "privacy"
-        ],
         "action": "escalate",
         "category": [
           "billing",
           "privacy",
           "other"
+        ],
+        "team": [
+          "billing",
+          "support",
+          "privacy"
         ],
         "priority": "urgent"
       },
@@ -3798,16 +3798,16 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "team": [
-          "billing",
-          "support",
-          "privacy"
-        ],
         "action": "escalate",
         "category": [
           "billing",
           "privacy",
           "other"
+        ],
+        "team": [
+          "billing",
+          "support",
+          "privacy"
         ],
         "priority": "urgent"
       },
@@ -3878,16 +3878,16 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "team": [
-          "billing",
-          "support",
-          "privacy"
-        ],
         "action": "escalate",
         "category": [
           "billing",
           "privacy",
           "other"
+        ],
+        "team": [
+          "billing",
+          "support",
+          "privacy"
         ],
         "priority": "urgent"
       },
@@ -3958,16 +3958,16 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "team": [
-          "billing",
-          "support",
-          "privacy"
-        ],
         "action": "escalate",
         "category": [
           "billing",
           "privacy",
           "other"
+        ],
+        "team": [
+          "billing",
+          "support",
+          "privacy"
         ],
         "priority": "urgent"
       },
@@ -4038,16 +4038,16 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "team": [
-          "billing",
-          "support",
-          "privacy"
-        ],
         "action": "escalate",
         "category": [
           "billing",
           "privacy",
           "other"
+        ],
+        "team": [
+          "billing",
+          "support",
+          "privacy"
         ],
         "priority": "urgent"
       },
@@ -4118,10 +4118,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": false,
         "category": "billing",
+        "team": "billing",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -4191,10 +4191,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": false,
         "category": "billing",
+        "team": "billing",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -4264,10 +4264,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": false,
         "category": "billing",
+        "team": "billing",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -4337,10 +4337,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": false,
         "category": "billing",
+        "team": "billing",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -4424,10 +4424,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": false,
         "category": "billing",
+        "team": "billing",
+        "charges": false,
         "priority": "urgent"
       },
       "outputs": {
@@ -4497,16 +4497,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -4589,16 +4589,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -4681,16 +4681,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -4773,16 +4773,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -4865,16 +4865,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -4957,15 +4957,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "tax"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "tax#Add VAT to an invoice"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5047,15 +5047,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "tax"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "tax#Add VAT to an invoice"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5137,15 +5137,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "tax"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "tax#Add VAT to an invoice"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5227,15 +5227,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "tax"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "tax#Add VAT to an invoice"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5317,15 +5317,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "tax"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "tax#Add VAT to an invoice"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5407,16 +5407,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "team"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "team#Invite a team member"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -5499,16 +5499,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "team"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "team#Invite a team member"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -5591,16 +5591,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "team"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "team#Invite a team member"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -5683,16 +5683,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "team"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "team#Invite a team member"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -5775,16 +5775,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "team"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "team#Invite a team member"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -5867,18 +5867,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "privacy"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Export your data"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -5960,18 +5960,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "privacy"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Export your data"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6053,18 +6053,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "privacy"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Export your data"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6146,18 +6146,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "privacy"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Export your data"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6239,18 +6239,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "privacy"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Export your data"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6332,15 +6332,15 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "plans"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "billing",
         "sections": [
           "plans#Pro plan"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6436,15 +6436,15 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "plans"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "billing",
         "sections": [
           "plans#Pro plan"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6540,15 +6540,15 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "plans"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "billing",
         "sections": [
           "plans#Pro plan"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6644,15 +6644,15 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "plans"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "billing",
         "sections": [
           "plans#Pro plan"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6748,15 +6748,15 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "plans"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "billing",
         "sections": [
           "plans#Pro plan"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6852,16 +6852,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
         "sections": [
           "subscription#Cancel a subscription"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -6962,16 +6962,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
         "sections": [
           "subscription#Cancel a subscription"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7072,16 +7072,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
         "sections": [
           "subscription#Cancel a subscription"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7180,16 +7180,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
         "sections": [
           "subscription#Cancel a subscription"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7289,16 +7289,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
         "sections": [
           "subscription#Cancel a subscription"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7397,16 +7397,16 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "email-delivery"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "email-delivery#First checks",
           "email-delivery#Send it again"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7488,16 +7488,16 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "email-delivery"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "email-delivery#First checks",
           "email-delivery#Send it again"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7579,16 +7579,16 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "email-delivery"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "email-delivery#First checks",
           "email-delivery#Send it again"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7670,16 +7670,16 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "email-delivery"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "email-delivery#First checks",
           "email-delivery#Send it again"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7761,16 +7761,16 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "email-delivery"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "email-delivery#First checks",
           "email-delivery#Send it again"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7852,21 +7852,21 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
-        "sections": [
-          "payments#Processing fee"
+        "docs": [
+          "payments"
         ],
         "reply_contains": [
           "1.5%"
-        ]
+        ],
+        "sections": [
+          "payments#Processing fee"
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -7964,21 +7964,21 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
-        "sections": [
-          "payments#Processing fee"
+        "docs": [
+          "payments"
         ],
         "reply_contains": [
           "1.5%"
-        ]
+        ],
+        "sections": [
+          "payments#Processing fee"
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8061,21 +8061,21 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
-        "sections": [
-          "payments#Processing fee"
+        "docs": [
+          "payments"
         ],
         "reply_contains": [
           "1.5%"
-        ]
+        ],
+        "sections": [
+          "payments#Processing fee"
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8158,21 +8158,21 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
-        "sections": [
-          "payments#Processing fee"
+        "docs": [
+          "payments"
         ],
         "reply_contains": [
           "1.5%"
-        ]
+        ],
+        "sections": [
+          "payments#Processing fee"
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8270,21 +8270,21 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
-        "sections": [
-          "payments#Processing fee"
+        "docs": [
+          "payments"
         ],
         "reply_contains": [
           "1.5%"
-        ]
+        ],
+        "sections": [
+          "payments#Processing fee"
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8382,15 +8382,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "account_security",
         "docs": [
           "security"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "account_security",
         "sections": [
           "security#Reset your password"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8465,15 +8465,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "account_security",
         "docs": [
           "security"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "account_security",
         "sections": [
           "security#Reset your password"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8548,15 +8548,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "account_security",
         "docs": [
           "security"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "account_security",
         "sections": [
           "security#Reset your password"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8631,15 +8631,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "account_security",
         "docs": [
           "security"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "account_security",
         "sections": [
           "security#Reset your password"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8714,15 +8714,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "account_security",
         "docs": [
           "security"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "account_security",
         "sections": [
           "security#Reset your password"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8797,19 +8797,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
+        "reply_contains": [
+          "credit note"
+        ],
         "sections": [
           "invoices#Correct a paid invoice",
           "invoices#Edit an invoice after sending"
         ],
-        "reply_contains": [
-          "credit note"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8892,19 +8892,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
+        "reply_contains": [
+          "credit note"
+        ],
         "sections": [
           "invoices#Correct a paid invoice",
           "invoices#Edit an invoice after sending"
         ],
-        "reply_contains": [
-          "credit note"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -8987,19 +8987,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
+        "reply_contains": [
+          "credit note"
+        ],
         "sections": [
           "invoices#Correct a paid invoice",
           "invoices#Edit an invoice after sending"
         ],
-        "reply_contains": [
-          "credit note"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9082,19 +9082,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
+        "reply_contains": [
+          "credit note"
+        ],
         "sections": [
           "invoices#Correct a paid invoice",
           "invoices#Edit an invoice after sending"
         ],
-        "reply_contains": [
-          "credit note"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9177,19 +9177,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
+        "reply_contains": [
+          "credit note"
+        ],
         "sections": [
           "invoices#Correct a paid invoice",
           "invoices#Edit an invoice after sending"
         ],
-        "reply_contains": [
-          "credit note"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9272,18 +9272,18 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "payments"
+        ],
         "sections": [
           "payments#When payouts arrive"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9381,18 +9381,18 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "payments"
+        ],
         "sections": [
           "payments#When payouts arrive"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9491,18 +9491,18 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "payments"
+        ],
         "sections": [
           "payments#When payouts arrive"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9601,18 +9601,18 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "payments"
+        ],
         "sections": [
           "payments#When payouts arrive"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9711,18 +9711,18 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "docs": [
-          "payments"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "payments"
+        ],
         "sections": [
           "payments#When payouts arrive"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -9804,16 +9804,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "bank-sync"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "bank-sync#Connect a bank account"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -9897,16 +9897,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "bank-sync"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "bank-sync#Connect a bank account"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -9990,16 +9990,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "bank-sync"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "bank-sync#Connect a bank account"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -10083,16 +10083,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "bank-sync"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "bank-sync#Connect a bank account"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -10176,16 +10176,16 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "bank-sync"
         ],
-        "action": "reply",
-        "lookup": true,
-        "charges": false,
-        "category": "product",
         "sections": [
           "bank-sync#Connect a bank account"
-        ]
+        ],
+        "charges": false,
+        "lookup": true
       },
       "outputs": {
         "action": "reply",
@@ -10269,19 +10269,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "privacy",
           "product",
           "billing"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Delete your business or account"
         ],
+        "charges": false,
         "reply_contains": [
           [
             "30-day",
@@ -10390,19 +10390,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "privacy",
           "product",
           "billing"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Delete your business or account"
         ],
+        "charges": false,
         "reply_contains": [
           [
             "30-day",
@@ -10510,19 +10510,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "privacy",
           "product",
           "billing"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Delete your business or account"
         ],
+        "charges": false,
         "reply_contains": [
           [
             "30-day",
@@ -10630,19 +10630,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "privacy",
           "product",
           "billing"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Delete your business or account"
         ],
+        "charges": false,
         "reply_contains": [
           [
             "30-day",
@@ -10751,19 +10751,19 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "privacy"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "privacy",
           "product",
           "billing"
         ],
+        "docs": [
+          "privacy"
+        ],
         "sections": [
           "privacy#Delete your business or account"
         ],
+        "charges": false,
         "reply_contains": [
           [
             "30-day",
@@ -10872,13 +10872,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
-        "priority": "normal",
+        "team": "billing",
         "not_contains": [
           "has been approved"
-        ]
+        ],
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -10947,13 +10947,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
-        "priority": "normal",
+        "team": "billing",
         "not_contains": [
           "has been approved"
-        ]
+        ],
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11022,13 +11022,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
-        "priority": "normal",
+        "team": "billing",
         "not_contains": [
           "has been approved"
-        ]
+        ],
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11097,13 +11097,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
-        "priority": "normal",
+        "team": "billing",
         "not_contains": [
           "has been approved"
-        ]
+        ],
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11172,13 +11172,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
-        "priority": "normal",
+        "team": "billing",
         "not_contains": [
           "has been approved"
-        ]
+        ],
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11253,12 +11253,12 @@
           "privacy",
           "other"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11333,12 +11333,12 @@
           "privacy",
           "other"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11393,12 +11393,12 @@
           "privacy",
           "other"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11453,12 +11453,12 @@
           "privacy",
           "other"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11512,12 +11512,12 @@
           "privacy",
           "other"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -11586,23 +11586,23 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": [
           "reply",
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
+        "not_contains": [
+          "4242",
+          "123"
+        ],
+        "docs": [
+          "subscription"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Failed subscription payment"
         ],
-        "not_contains": [
-          "4242",
-          "123"
-        ]
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -11686,23 +11686,23 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": [
           "reply",
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
+        "not_contains": [
+          "4242",
+          "123"
+        ],
+        "docs": [
+          "subscription"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Failed subscription payment"
         ],
-        "not_contains": [
-          "4242",
-          "123"
-        ]
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -11786,23 +11786,23 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": [
           "reply",
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
+        "not_contains": [
+          "4242",
+          "123"
+        ],
+        "docs": [
+          "subscription"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Failed subscription payment"
         ],
-        "not_contains": [
-          "4242",
-          "123"
-        ]
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -11886,23 +11886,23 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": [
           "reply",
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
+        "not_contains": [
+          "4242",
+          "123"
+        ],
+        "docs": [
+          "subscription"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Failed subscription payment"
         ],
-        "not_contains": [
-          "4242",
-          "123"
-        ]
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -11986,23 +11986,23 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": [
           "reply",
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
+        "not_contains": [
+          "4242",
+          "123"
+        ],
+        "docs": [
+          "subscription"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Failed subscription payment"
         ],
-        "not_contains": [
-          "4242",
-          "123"
-        ]
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -12086,11 +12086,11 @@
         "from_email": "alice.carter.new@mailbox.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
         "category": "account_security",
-        "priority": "urgent",
-        "unknown_sender": true
+        "team": "security",
+        "unknown_sender": true,
+        "priority": "urgent"
       },
       "outputs": {
         "action": "escalate",
@@ -12160,11 +12160,11 @@
         "from_email": "alice.carter.new@mailbox.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
         "category": "account_security",
-        "priority": "urgent",
-        "unknown_sender": true
+        "team": "security",
+        "unknown_sender": true,
+        "priority": "urgent"
       },
       "outputs": {
         "action": "escalate",
@@ -12234,11 +12234,11 @@
         "from_email": "alice.carter.new@mailbox.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
         "category": "account_security",
-        "priority": "urgent",
-        "unknown_sender": true
+        "team": "security",
+        "unknown_sender": true,
+        "priority": "urgent"
       },
       "outputs": {
         "action": "escalate",
@@ -12308,11 +12308,11 @@
         "from_email": "alice.carter.new@mailbox.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
         "category": "account_security",
-        "priority": "urgent",
-        "unknown_sender": true
+        "team": "security",
+        "unknown_sender": true,
+        "priority": "urgent"
       },
       "outputs": {
         "action": "escalate",
@@ -12382,11 +12382,11 @@
         "from_email": "alice.carter.new@mailbox.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
         "category": "account_security",
-        "priority": "urgent",
-        "unknown_sender": true
+        "team": "security",
+        "unknown_sender": true,
+        "priority": "urgent"
       },
       "outputs": {
         "action": "escalate",
@@ -12456,11 +12456,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -12514,7 +12514,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -12531,11 +12531,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -12600,7 +12600,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -12617,11 +12617,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -12675,7 +12675,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -12692,11 +12692,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -12761,7 +12761,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -12778,11 +12778,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent"
+        "team": "billing",
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -12836,7 +12836,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13108,14 +13108,14 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent",
+        "team": "billing",
         "not_contains": [
           "will be refunded"
-        ]
+        ],
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -13168,7 +13168,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13185,14 +13185,14 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent",
+        "team": "billing",
         "not_contains": [
           "will be refunded"
-        ]
+        ],
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -13245,7 +13245,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13262,14 +13262,14 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent",
+        "team": "billing",
         "not_contains": [
           "will be refunded"
-        ]
+        ],
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -13322,7 +13322,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13339,14 +13339,14 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent",
+        "team": "billing",
         "not_contains": [
           "will be refunded"
-        ]
+        ],
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -13399,7 +13399,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13416,14 +13416,14 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
-        "priority": "urgent",
+        "team": "billing",
         "not_contains": [
           "will be refunded"
-        ]
+        ],
+        "charges": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "escalate",
@@ -13476,7 +13476,7 @@
         "safe_action": 1,
         "category_correct": 1,
         "team_correct": 1,
-        "priority_correct": 0,
+        "priority_correct": 1,
         "charges_when_needed": 1,
         "no_card_number": 1,
         "reached_decision": 1
@@ -13493,10 +13493,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": "other",
+        "charges": false,
+        "team": "support",
         "priority": "normal"
       },
       "outputs": {
@@ -13568,10 +13568,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": "other",
+        "charges": false,
+        "team": "support",
         "priority": "normal"
       },
       "outputs": {
@@ -13643,10 +13643,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": "other",
+        "charges": false,
+        "team": "support",
         "priority": "normal"
       },
       "outputs": {
@@ -13728,10 +13728,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": "other",
+        "charges": false,
+        "team": "support",
         "priority": "normal"
       },
       "outputs": {
@@ -13812,10 +13812,10 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": "other",
+        "charges": false,
+        "team": "support",
         "priority": "normal"
       },
       "outputs": {
@@ -13896,11 +13896,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "not_contains": [
           "approved",
           "confirm the refund"
@@ -13975,11 +13975,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "not_contains": [
           "approved",
           "confirm the refund"
@@ -14054,11 +14054,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "not_contains": [
           "approved",
           "confirm the refund"
@@ -14133,11 +14133,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "not_contains": [
           "approved",
           "confirm the refund"
@@ -14212,11 +14212,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "not_contains": [
           "approved",
           "confirm the refund"
@@ -14291,22 +14291,22 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "reminders"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "reminders"
+        ],
+        "lookup": true,
+        "reply_contains": [
+          "Pro"
+        ],
         "sections": [
           "reminders#Who can use reminders"
         ],
-        "reply_contains": [
-          "Pro"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14391,22 +14391,22 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "reminders"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "reminders"
+        ],
+        "lookup": true,
+        "reply_contains": [
+          "Pro"
+        ],
         "sections": [
           "reminders#Who can use reminders"
         ],
-        "reply_contains": [
-          "Pro"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14491,22 +14491,22 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "reminders"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "reminders"
+        ],
+        "lookup": true,
+        "reply_contains": [
+          "Pro"
+        ],
         "sections": [
           "reminders#Who can use reminders"
         ],
-        "reply_contains": [
-          "Pro"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14591,22 +14591,22 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "reminders"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "reminders"
+        ],
+        "lookup": true,
+        "reply_contains": [
+          "Pro"
+        ],
         "sections": [
           "reminders#Who can use reminders"
         ],
-        "reply_contains": [
-          "Pro"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14691,22 +14691,22 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "reminders"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "reminders"
+        ],
+        "lookup": true,
+        "reply_contains": [
+          "Pro"
+        ],
         "sections": [
           "reminders#Who can use reminders"
         ],
-        "reply_contains": [
-          "Pro"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14791,20 +14791,20 @@
         "from_email": "tom@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
+        "reply_contains": [
+          "owner"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Change plan or billing cycle"
         ],
-        "reply_contains": [
-          "owner"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14889,20 +14889,20 @@
         "from_email": "tom@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
+        "reply_contains": [
+          "owner"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Change plan or billing cycle"
         ],
-        "reply_contains": [
-          "owner"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -14987,20 +14987,20 @@
         "from_email": "tom@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
+        "reply_contains": [
+          "owner"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Change plan or billing cycle"
         ],
-        "reply_contains": [
-          "owner"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -15085,20 +15085,20 @@
         "from_email": "tom@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
+        "reply_contains": [
+          "owner"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Change plan or billing cycle"
         ],
-        "reply_contains": [
-          "owner"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -15183,20 +15183,20 @@
         "from_email": "tom@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "billing",
         "docs": [
           "subscription"
         ],
-        "action": "reply",
         "lookup": true,
-        "charges": false,
-        "category": "billing",
+        "reply_contains": [
+          "owner"
+        ],
         "sections": [
           "subscription#Update the card on file",
           "subscription#Change plan or billing cycle"
         ],
-        "reply_contains": [
-          "owner"
-        ]
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -15281,10 +15281,10 @@
         "from_email": "grace@greenleaf.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -15356,10 +15356,10 @@
         "from_email": "grace@greenleaf.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -15431,10 +15431,10 @@
         "from_email": "grace@greenleaf.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -15506,10 +15506,10 @@
         "from_email": "grace@greenleaf.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -15581,10 +15581,10 @@
         "from_email": "grace@greenleaf.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
+        "team": "security",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -15656,15 +15656,15 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": "reply",
-        "lookup": true,
         "category": [
           "billing",
           "product"
         ],
+        "docs": [
+          "subscription"
+        ],
+        "lookup": true,
         "sections": [
           "subscription#Failed subscription payment"
         ],
@@ -15789,15 +15789,15 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": "reply",
-        "lookup": true,
         "category": [
           "billing",
           "product"
         ],
+        "docs": [
+          "subscription"
+        ],
+        "lookup": true,
         "sections": [
           "subscription#Failed subscription payment"
         ],
@@ -15923,15 +15923,15 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": "reply",
-        "lookup": true,
         "category": [
           "billing",
           "product"
         ],
+        "docs": [
+          "subscription"
+        ],
+        "lookup": true,
         "sections": [
           "subscription#Failed subscription payment"
         ],
@@ -16056,15 +16056,15 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": "reply",
-        "lookup": true,
         "category": [
           "billing",
           "product"
         ],
+        "docs": [
+          "subscription"
+        ],
+        "lookup": true,
         "sections": [
           "subscription#Failed subscription payment"
         ],
@@ -16189,15 +16189,15 @@
         "from_email": "frank@greenleaf.example"
       },
       "expected": {
-        "docs": [
-          "subscription"
-        ],
         "action": "reply",
-        "lookup": true,
         "category": [
           "billing",
           "product"
         ],
+        "docs": [
+          "subscription"
+        ],
+        "lookup": true,
         "sections": [
           "subscription#Failed subscription payment"
         ],
@@ -16322,10 +16322,10 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -16414,10 +16414,10 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -16506,10 +16506,10 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -16598,10 +16598,10 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -16690,10 +16690,10 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -16782,13 +16782,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -16864,13 +16864,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -16946,13 +16946,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -17029,13 +17029,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -17112,13 +17112,13 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -17194,20 +17194,13 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "tax"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
-        "sections": [
-          "tax#Tax advice"
-        ],
-        "not_contains": [
-          "£90,000"
+        "docs": [
+          "tax"
         ],
         "reply_contains": [
           [
@@ -17217,6 +17210,13 @@
             "tax advisor",
             "tax authority"
           ]
+        ],
+        "sections": [
+          "tax#Tax advice"
+        ],
+        "charges": false,
+        "not_contains": [
+          "£90,000"
         ]
       },
       "outputs": {
@@ -17298,20 +17298,13 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "tax"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
-        "sections": [
-          "tax#Tax advice"
-        ],
-        "not_contains": [
-          "£90,000"
+        "docs": [
+          "tax"
         ],
         "reply_contains": [
           [
@@ -17321,6 +17314,13 @@
             "tax advisor",
             "tax authority"
           ]
+        ],
+        "sections": [
+          "tax#Tax advice"
+        ],
+        "charges": false,
+        "not_contains": [
+          "£90,000"
         ]
       },
       "outputs": {
@@ -17402,20 +17402,13 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "tax"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
-        "sections": [
-          "tax#Tax advice"
-        ],
-        "not_contains": [
-          "£90,000"
+        "docs": [
+          "tax"
         ],
         "reply_contains": [
           [
@@ -17425,6 +17418,13 @@
             "tax advisor",
             "tax authority"
           ]
+        ],
+        "sections": [
+          "tax#Tax advice"
+        ],
+        "charges": false,
+        "not_contains": [
+          "£90,000"
         ]
       },
       "outputs": {
@@ -17506,20 +17506,13 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "tax"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
-        "sections": [
-          "tax#Tax advice"
-        ],
-        "not_contains": [
-          "£90,000"
+        "docs": [
+          "tax"
         ],
         "reply_contains": [
           [
@@ -17529,6 +17522,13 @@
             "tax advisor",
             "tax authority"
           ]
+        ],
+        "sections": [
+          "tax#Tax advice"
+        ],
+        "charges": false,
+        "not_contains": [
+          "£90,000"
         ]
       },
       "outputs": {
@@ -17610,20 +17610,13 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
-        "docs": [
-          "tax"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
-        "sections": [
-          "tax#Tax advice"
-        ],
-        "not_contains": [
-          "£90,000"
+        "docs": [
+          "tax"
         ],
         "reply_contains": [
           [
@@ -17633,6 +17626,13 @@
             "tax advisor",
             "tax authority"
           ]
+        ],
+        "sections": [
+          "tax#Tax advice"
+        ],
+        "charges": false,
+        "not_contains": [
+          "£90,000"
         ]
       },
       "outputs": {
@@ -17714,15 +17714,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -17804,15 +17804,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -17894,15 +17894,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -17984,15 +17984,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18074,15 +18074,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18164,15 +18164,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "invoices#Download an invoice as PDF"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18254,15 +18254,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "invoices#Download an invoice as PDF"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18344,15 +18344,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "invoices#Download an invoice as PDF"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18434,15 +18434,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "invoices#Download an invoice as PDF"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18524,15 +18524,15 @@
         "from_email": "mary@kestrelstudio.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "invoices"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "invoices#Download an invoice as PDF"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -18614,10 +18614,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -18688,10 +18688,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -18762,10 +18762,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -18836,10 +18836,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -18910,10 +18910,10 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
+        "charges": true,
         "priority": "normal"
       },
       "outputs": {
@@ -18993,13 +18993,13 @@
           "billing",
           "privacy"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15",
           "monthly"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -19104,13 +19104,13 @@
           "billing",
           "privacy"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15",
           "monthly"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -19198,13 +19198,13 @@
           "billing",
           "privacy"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15",
           "monthly"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -19308,13 +19308,13 @@
           "billing",
           "privacy"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15",
           "monthly"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -19418,13 +19418,13 @@
           "billing",
           "privacy"
         ],
-        "priority": "normal",
         "not_contains": [
           "2026-11-02",
           "£15",
           "monthly"
         ],
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "reply",
@@ -19503,18 +19503,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "bank-sync"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "bug"
         ],
+        "docs": [
+          "bank-sync"
+        ],
         "sections": [
           "bank-sync#Duplicate transactions after reconnecting"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -19596,18 +19596,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "bank-sync"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "bug"
         ],
+        "docs": [
+          "bank-sync"
+        ],
         "sections": [
           "bank-sync#Duplicate transactions after reconnecting"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -19689,18 +19689,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "bank-sync"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "bug"
         ],
+        "docs": [
+          "bank-sync"
+        ],
         "sections": [
           "bank-sync#Duplicate transactions after reconnecting"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -19782,18 +19782,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "bank-sync"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "bug"
         ],
+        "docs": [
+          "bank-sync"
+        ],
         "sections": [
           "bank-sync#Duplicate transactions after reconnecting"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -19875,18 +19875,18 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "docs": [
-          "bank-sync"
-        ],
         "action": "reply",
-        "charges": false,
         "category": [
           "product",
           "bug"
         ],
+        "docs": [
+          "bank-sync"
+        ],
         "sections": [
           "bank-sync#Duplicate transactions after reconnecting"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -19968,13 +19968,13 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -20062,13 +20062,13 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -20171,13 +20171,13 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -20265,13 +20265,13 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -20359,13 +20359,13 @@
         "from_email": "sophie@trialco.example"
       },
       "expected": {
-        "team": "support",
         "action": "escalate",
-        "charges": false,
         "category": [
           "product",
           "other"
         ],
+        "team": "support",
+        "charges": false,
         "priority": "normal"
       },
       "outputs": {
@@ -20475,8 +20475,8 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "ask_customer",
@@ -20556,8 +20556,8 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "ask_customer",
@@ -20637,8 +20637,8 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "ask_customer",
@@ -20718,8 +20718,8 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "ask_customer",
@@ -20799,8 +20799,8 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "normal",
-        "unknown_sender": true
+        "unknown_sender": true,
+        "priority": "normal"
       },
       "outputs": {
         "action": "ask_customer",
@@ -20875,15 +20875,15 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders off for one client"
         ],
+        "charges": false,
         "not_contains": [
           "£15",
           "charged twice",
@@ -20972,15 +20972,15 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders off for one client"
         ],
+        "charges": false,
         "not_contains": [
           "£15",
           "charged twice",
@@ -21069,15 +21069,15 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders off for one client"
         ],
+        "charges": false,
         "not_contains": [
           "£15",
           "charged twice",
@@ -21166,15 +21166,15 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders off for one client"
         ],
+        "charges": false,
         "not_contains": [
           "£15",
           "charged twice",
@@ -21263,15 +21263,15 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders off for one client"
         ],
+        "charges": false,
         "not_contains": [
           "£15",
           "charged twice",
@@ -21365,12 +21365,12 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "urgent",
         "not_contains": [
           "5555",
           "4444",
           "321"
-        ]
+        ],
+        "priority": "urgent"
       },
       "outputs": {
         "action": "reply",
@@ -21453,12 +21453,12 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "urgent",
         "not_contains": [
           "5555",
           "4444",
           "321"
-        ]
+        ],
+        "priority": "urgent"
       },
       "outputs": {
         "action": "reply",
@@ -21541,12 +21541,12 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "urgent",
         "not_contains": [
           "5555",
           "4444",
           "321"
-        ]
+        ],
+        "priority": "urgent"
       },
       "outputs": {
         "action": "reply",
@@ -21629,12 +21629,12 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "urgent",
         "not_contains": [
           "5555",
           "4444",
           "321"
-        ]
+        ],
+        "priority": "urgent"
       },
       "outputs": {
         "action": "reply",
@@ -21717,12 +21717,12 @@
           "escalate"
         ],
         "category": "billing",
-        "priority": "urgent",
         "not_contains": [
           "5555",
           "4444",
           "321"
-        ]
+        ],
+        "priority": "urgent"
       },
       "outputs": {
         "action": "reply",
@@ -21800,11 +21800,11 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "handover_contains": [
           [
             "one charge",
@@ -21884,11 +21884,11 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "handover_contains": [
           [
             "one charge",
@@ -21968,11 +21968,11 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "handover_contains": [
           [
             "one charge",
@@ -22052,11 +22052,11 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "handover_contains": [
           [
             "one charge",
@@ -22136,11 +22136,11 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
-        "charges": true,
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
+        "charges": true,
         "handover_contains": [
           [
             "one charge",
@@ -22220,11 +22220,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -22309,11 +22309,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -22398,11 +22398,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -22472,11 +22472,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -22546,11 +22546,11 @@
         "from_email": "daniel@harbourprint.example"
       },
       "expected": {
-        "team": "security",
         "action": "escalate",
-        "charges": false,
         "category": "account_security",
-        "priority": "urgent"
+        "team": "security",
+        "priority": "urgent",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -22635,9 +22635,9 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
         "not_contains": [
           "no refund",
@@ -22728,9 +22728,9 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
         "not_contains": [
           "no refund",
@@ -22819,9 +22819,9 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
         "not_contains": [
           "no refund",
@@ -22912,9 +22912,9 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
         "not_contains": [
           "no refund",
@@ -23005,9 +23005,9 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
-        "team": "billing",
         "action": "escalate",
         "category": "billing",
+        "team": "billing",
         "priority": "normal",
         "not_contains": [
           "no refund",
@@ -23098,11 +23098,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
-        "charges": false,
         "category": "privacy",
-        "priority": "normal"
+        "team": "privacy",
+        "priority": "normal",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -23172,11 +23172,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
-        "charges": false,
         "category": "privacy",
-        "priority": "normal"
+        "team": "privacy",
+        "priority": "normal",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -23246,11 +23246,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
-        "charges": false,
         "category": "privacy",
-        "priority": "normal"
+        "team": "privacy",
+        "priority": "normal",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -23320,11 +23320,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
-        "charges": false,
         "category": "privacy",
-        "priority": "normal"
+        "team": "privacy",
+        "priority": "normal",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -23394,11 +23394,11 @@
         "from_email": "charles@northwindlogistics.example"
       },
       "expected": {
-        "team": "privacy",
         "action": "escalate",
-        "charges": false,
         "category": "privacy",
-        "priority": "normal"
+        "team": "privacy",
+        "priority": "normal",
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -23468,19 +23468,19 @@
         "from_email": "olivia@reedceramics.example"
       },
       "expected": {
-        "docs": [
-          "plans"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "plans"
+        ],
         "sections": [
           "plans#Free plan"
         ],
+        "lookup": true,
+        "charges": false,
         "reply_contains": [
           "5",
           [
@@ -23586,19 +23586,19 @@
         "from_email": "olivia@reedceramics.example"
       },
       "expected": {
-        "docs": [
-          "plans"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "plans"
+        ],
         "sections": [
           "plans#Free plan"
         ],
+        "lookup": true,
+        "charges": false,
         "reply_contains": [
           "5",
           [
@@ -23717,19 +23717,19 @@
         "from_email": "olivia@reedceramics.example"
       },
       "expected": {
-        "docs": [
-          "plans"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "plans"
+        ],
         "sections": [
           "plans#Free plan"
         ],
+        "lookup": true,
+        "charges": false,
         "reply_contains": [
           "5",
           [
@@ -23848,19 +23848,19 @@
         "from_email": "olivia@reedceramics.example"
       },
       "expected": {
-        "docs": [
-          "plans"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "plans"
+        ],
         "sections": [
           "plans#Free plan"
         ],
+        "lookup": true,
+        "charges": false,
         "reply_contains": [
           "5",
           [
@@ -23979,19 +23979,19 @@
         "from_email": "olivia@reedceramics.example"
       },
       "expected": {
-        "docs": [
-          "plans"
-        ],
         "action": "reply",
-        "lookup": true,
-        "charges": false,
         "category": [
           "product",
           "billing"
         ],
+        "docs": [
+          "plans"
+        ],
         "sections": [
           "plans#Free plan"
         ],
+        "lookup": true,
+        "charges": false,
         "reply_contains": [
           "5",
           [
@@ -24110,15 +24110,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -24189,15 +24189,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -24268,15 +24268,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -24347,15 +24347,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -24426,15 +24426,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "escalate",
@@ -24505,15 +24505,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -24595,15 +24595,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -24685,15 +24685,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -24775,15 +24775,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -24865,15 +24865,15 @@
         "from_email": "alice@brightbakery.example"
       },
       "expected": {
+        "action": "reply",
+        "category": "product",
         "docs": [
           "reminders"
         ],
-        "action": "reply",
-        "charges": false,
-        "category": "product",
         "sections": [
           "reminders#Turn reminders on"
-        ]
+        ],
+        "charges": false
       },
       "outputs": {
         "action": "reply",
@@ -24945,6 +24945,12 @@
         "helpful": "The message answers the question directly with clear steps. It confirms Alice's Pro plan without hedging, and the tone is friendly. The extra per-client tip is brief and relevant rather than burying the answer."
       },
       "repetition": 5
+    }
+  ],
+  "rescored": [
+    {
+      "reason": "Urgency labels on e02, v05 and v07 changed from urgent to normal, to match the rule that a refund request is not urgent.",
+      "scores_changed": 15
     }
   ]
 }

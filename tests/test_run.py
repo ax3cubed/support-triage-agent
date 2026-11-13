@@ -187,3 +187,22 @@ def test_undo_takes_back_only_the_last_mark(tmp_path, monkeypatch):
     calibrate.undo()
 
     assert [json.loads(line)["id"] for line in marks_file.read_text().splitlines()] == ["a"]
+
+
+def test_rescoring_applies_a_changed_label_and_leaves_the_judge_alone():
+    from evals.rescore import rescore
+
+    outputs = {
+        "action": "escalate", "category": "billing", "team": "billing", "priority": "normal", "message": "Refund.",
+        "cited_doc_ids": [], "retrieved_doc_ids": [], "retrieved_sections": [], "tool_calls": [], "saw_charges": False,
+        "card_in_ticket": False, "card_reached_model": False, "gave_up": False,
+    }  # fmt: skip
+    row = {"case_id": "e02", "slice": "normal", "error": None, "outputs": outputs, "expected": {}}
+    row["scores"] = {"priority_correct": 0, "grounded": 1}
+    run = {"rows": [row]}
+    cases = {"e02": {"expected": {"action": "escalate", "team": "billing", "priority": "normal"}}}
+
+    changed = rescore(run, cases)
+
+    assert row["scores"]["priority_correct"] == 1 and row["scores"]["grounded"] == 1
+    assert changed >= 1
