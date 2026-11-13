@@ -142,6 +142,8 @@ The totals move little because most cases pass in both versions. The real result
 | x16, a card with its security code | Reached the model 5 times | Never |
 | x15, an unrelated double charge | Mentioned it 5 times | Never saw it |
 
+**Cost of the changes.** v3 uses about 27% more tokens per ticket than v0 (6,001 against 4,719) and costs about $0.015 against $0.013, from longer instructions and a second search. Median time per ticket is unchanged at about 4 seconds.
+
 ### What v3 still gets wrong
 
 | Case | What happens | Why |
@@ -186,6 +188,8 @@ Everything ran through LangSmith. The dataset is `support-triage`, and each `mak
 - [The dataset and all experiments in LangSmith](https://eu.smith.langchain.com/public/9300f3c1-3aea-4827-8c0b-1c10dc2bc6fe/d). Tick `v0-final` and `v3-final` and choose Compare to see them side by side. Click any row to open that ticket's trace.
 
 Without LangSmith access, the same data is in `results/`: one file per run with every ticket, the agent's output, each score and the judge's reasoning. `make report RUNS="v0-final v3-final"` prints the comparison.
+
+One number differs between LangSmith and this README. I changed three urgency labels (e02, v05, v07) after the final runs and re-scored the saved results with `evals/rescore.py`, without running again. LangSmith keeps the scores from run time, so its `priority_correct` is lower than the figure here. The files in `results/` hold the re-scored values and record the change.
 
 ## Known failures and limits
 
