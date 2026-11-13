@@ -4,7 +4,7 @@ An agent that reads a support ticket for Ledgerly (a fictional invoicing product
 
 The first version got 43 of 45 tickets right, and when I read its failures, most turned out to be faults in my own test. I fixed the test, then the agent, which led to v3. It no longer refuses refunds itself or tells strangers whether an email has an account. It no longer sees charge data or card numbers it does not need, and it hands the ticket over when the help centre is silent. Over 5 runs, the cases behind each of those went from failing in nearly every run to passing in every run. Two cases still fail, and the results below explain why. I also checked the LLM judge against 74 messages I marked myself.
 
-**Screen recording:** [a 5-minute walkthrough of the agent and the results](https://www.loom.com/share/832097201e2849d2b70bb0b1643ca662).
+**Screen recording:** [a 5-minute walkthrough of the agent and the results](https://www.loom.com/share/7134422c27cc4ff58dbdaaabdad5878c).
 
 ## Quickstart
 
