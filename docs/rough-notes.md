@@ -4,6 +4,14 @@ This is a working log of what I did, what I found and what I decided. It is raw 
 
 A few terms used throughout. A **case** is one test ticket with its expected answer. A **check** marks one thing as pass or fail. The **judge** is a second AI that marks replies. A reply is **grounded** if everything it says comes from the help articles. To **escalate** is to pass the ticket to a human team.
 
+## Where things stand
+
+Last updated after the final comparison (Step 17).
+
+- I have built four versions of the agent (v0 to v3), a test of 56 cases, 20 checks in code and a rebuilt judge, and I have compared v0 against v3 over five runs each.
+- v3 fixed every problem it was built for in 5 runs out of 5: refund refusals, account leaks, a card reaching the AI, charges shown without need, and a missed help section. The cost is one case that the refund rule now sends to billing by mistake.
+- Still to do: mark replies to check the judge, three small decisions, the write-up, the links and the recording. See "Next steps" near the end.
+
 ## Step 1. Choosing the problem
 
 I picked customer support triage for a made-up invoicing product called Ledgerly. The agent reads one ticket and ends in exactly one action: reply, escalate to a team, or ask the customer a question.
@@ -161,7 +169,7 @@ The plan covers every safety gap and every misleading check. Safety fixes go int
 
 | # | Change | Status |
 |---|---|---|
-| 1 | Stronger card guard: before the run starts, and on outgoing messages | Built and run. See Step 11 |
+| 1 | Stronger card guard: before the run starts, and on outgoing messages | Built and run. See Steps 11 and 17 |
 | 2 | Privacy rule applies only to senders with no account; neutral tool message | Built. Needs repeated runs to measure. See Step 14 |
 | 3 | Refund rule in code: these tickets cannot end in a reply | Built, proven by code tests. See Step 12 |
 | 4 | Check every tool call; one action per step; the cautious action wins | Built, proven by code tests. See Step 12 |
@@ -427,7 +435,7 @@ These eight are real but too big to fix here. I will list them in the write-up.
 
 1. The sender is trusted by email address. Addresses are easy to fake, so anyone writing as a customer gets that customer's details. Real use needs a sender the mail system has verified, or a signed-in user.
 2. Search is by word matching, so it misses questions worded differently from the article. Meaning-based search alongside it is the usual next step.
-3. The test is small and mostly AI-drafted. It has 47 cases, three senders write most of them, and an AI wrote both the agent and the cases. Real tickets would be the next source.
+3. The test is small and mostly AI-drafted. It has 56 cases, three senders write most of them, and an AI wrote both the agent and the cases. Real tickets would be the next source.
 4. The judge and the agent are from the same AI family, so they may share blind spots.
 5. No ticket is part of a longer conversation, and none has a date, though several cases depend on a date the agent cannot know.
 6. The payment-details guard is a list of patterns and will never catch every format.
@@ -439,7 +447,9 @@ These eight are real but too big to fix here. I will list them in the write-up.
 Decisions still to make:
 
 - [ ] Is the judge too strict? Decide after marking replies myself.
-- [ ] Which of the 12 case ideas to add.
+- [ ] Urgency: add my rule to the agent's instructions, or change the labels on e02, e09, v05 and v07?
+- [ ] x11 and x22: leave them as known failures, or fix them?
+- [ ] Keep the four VAT cases?
 
 ## Where the evidence is
 
@@ -461,4 +471,4 @@ Decisions still to make:
 | Judge instructions | `evals/judge.py` |
 | Agent instructions for each version | `src/triage/prompts.py` |
 
-Compare any two runs with `make report RUNS="baseline2 v2"`.
+Compare any two runs with `make report RUNS="v0-final v3-final"`.
