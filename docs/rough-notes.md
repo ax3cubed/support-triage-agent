@@ -10,7 +10,8 @@ Last updated after the final comparison (Step 17).
 
 - I have built four versions of the agent (v0 to v3), a test of 56 cases, 20 checks in code and a rebuilt judge, and I have compared v0 against v3 over five runs each.
 - v3 fixed every problem it was built for in 5 runs out of 5: refund refusals, account leaks, a card reaching the AI, charges shown without need, and a missed help section. The cost is one case that the refund rule now sends to billing by mistake.
-- Still to do: mark replies to check the judge, three small decisions, the write-up, the links and the recording. See "Next steps" near the end.
+- I checked the judge against 74 messages I marked myself. When it fails a message it is right (63 of 64). On "grounded" it is more lenient than I am and catches 4 in 5 of the messages I would fail.
+- Still to do: three small decisions, the write-up, the links and the recording. See "Next steps" near the end.
 
 ## Step 1. Choosing the problem
 
@@ -454,11 +455,49 @@ Points for the interview:
 - A strict rule fails helpful, accurate sentences. The fix for that is better search, so the agent has the source, not a looser rule.
 - One sentence can fail a whole reply. That is harsh, and a finer score, such as a count of unsourced statements, would say more than pass or fail.
 
+## Step 19. The judge against my marks
+
+I marked all 74 messages without seeing the judge's marks, using the strict rule from Step 18. In the table, "caught" means we both failed the message, "missed" means I failed it and the judge passed it, and "false alarm" means the judge failed something I passed.
+
+| Question | Messages | Caught | Missed | False alarm | Both passed | Catch rate | Agreement beyond chance |
+|---|---|---|---|---|---|---|---|
+| Grounded | 74 | 36 | 9 | 0 | 29 | 0.80 | 0.76 |
+| Correct | 44 | 4 | 0 | 0 | 40 | 1.00 | 1.00 |
+| Helpful | 67 | 13 | 0 | 1 | 53 | 1.00 | 0.95 |
+| Account status private | 16 | 10 | 1 | 0 | 5 | 0.91 | 0.86 |
+
+When the judge fails a message, it is right. Across all four questions it failed 64 messages and I agreed on 63, so my earlier worry that it was too strict was wrong.
+
+On "grounded" the judge is more lenient than I am. It passed 9 of the 45 messages I failed, so the real grounded rate is a little lower than the judge reports, and its grounded score should be read as an upper limit. "Correct" and "helpful" match my marks almost exactly, though "correct" rests on only 4 fails. Plain accuracy on grounded is 0.88, which sounds fine and hides the 9 misses. The catch rate of 0.80 is the figure to use.
+
+All 10 misses fall into three kinds:
+
+| Kind | Examples | Count |
+|---|---|---|
+| General knowledge the help centre does not state | "HMRC is the tax authority" (x07, twice); "the CSV opens in Excel and Google Sheets" (n04, twice); "many sites prohibit scraping" (v08) | 5 |
+| Saying or implying another person is a customer | x11 in v3: "her own Ledgerly account", "Alice can view billing and invite team members" (3 grounded, 1 private) | 4 |
+| Advice with no source | x21: says nothing is broken, and suggests reusing a sent invoice | 1 |
+
+The judge's reasons explain the misses. It treats general knowledge as "not a claim about Ledgerly", and it treats a statement about Alice as "echoing the customer's own premise". Under my strict rule both fail.
+
+The one false alarm is x02 in v0, on helpful. The judge failed the reply for hedging about something the account record settles, and I passed it. It is a judgement call, and I did not write a reason.
+
+What this changes in my results:
+- The v3 privacy result is weaker than Step 17 says. The judge scored v3 as 2 of 2 on not revealing account status, but I failed one x11 reply in v3 for confirming that Alice has a Ledgerly account. v3 no longer tells a stranger about their own email, which was the original problem, but it can still confirm that someone else is a customer.
+- The grounded scores for both versions are a little high. The misses are spread over v0 and v3, so the comparison between them still holds.
+- In v3, x11 fails three ways at once: wrong action, not grounded by my marks, and not private. It is the clearest remaining weakness.
+
+Is the judge good enough? For this project, yes, with two stated limits. I can trust its fails, but I can't fully trust a grounded pass, since about 1 in 5 of the messages I would fail gets through. The fix would be two lines in the judge's instructions (general knowledge needs a source too, and naming anyone as a customer fails), then marking a fresh set to check, because fixing the judge on the same messages I measured it on would prove nothing. I have not done that.
+
+Limits of this check:
+- The 74 messages were picked to include every judge fail, so these rates describe this set and not an ordinary day's tickets.
+- One person marked them, once. A second marker on the same set would show how much of the disagreement comes from my own strictness.
+- My rule is strict. A more lenient marker would see fewer misses and more false alarms.
+- The judge ran once per message, so I did not measure how often it gives the same mark twice.
+
 ## Next steps
 
-1. Mark replies and check the judge. The set is ready: 74 messages from the two final runs. 49 are flagged (the judge failed them, or they were sent when a person was needed) and 25 are ones the judge passed.
-   - `uv run python -m evals.calibrate mark` shows one message at a time with the ticket, the account record, the help sections and the right-answer section. It never shows the judge's mark or which version wrote the message. It saves after each answer, and `q` stops it so I can pick up where I left off.
-   - `uv run python -m evals.calibrate report` prints the confusion matrix for each question, the catch rate, and every disagreement, with the judge's reasoning beside my note.
+1. Check the judge. Done, see Step 19. My marks are in `calibration/human_marks.jsonl`.
 2. Decide on urgency: add my rule to the agent's instructions, or change the four labels.
 3. Decide on x11 and x22. Either leave both as known failures, or fix them: for x11, a rule in code for requests about another business; for x22, have the refund rule ignore quoted text.
 4. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
@@ -480,7 +519,6 @@ These eight are real but too big to fix here. I will list them in the write-up.
 
 Decisions still to make:
 
-- [ ] Is the judge too strict? Decide after marking replies myself.
 - [ ] Urgency: add my rule to the agent's instructions, or change the labels on e02, e09, v05 and v07?
 - [ ] x11 and x22: leave them as known failures, or fix them?
 - [ ] Keep the four VAT cases?
