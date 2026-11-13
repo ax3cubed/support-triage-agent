@@ -1,11 +1,14 @@
 """The triage agent: a small LangGraph loop that ends in exactly one action.
 
-    redact -> agent <-> tools -> END
+    redact -> agent <-> tools -> checks -> END
+                 |  \\-> nudge -> agent (once)
                  \\-> give_up -> END
 
 The model can search the help centre and look up the sender's account as often as it needs, then
 must finish with one action tool: send a reply, hand over to a human, or ask the customer a question.
-If it never does, `give_up` hands the ticket to a human, so every run ends in a decision.
+From v3 the action is checked in code first, and a model that answers in words gets one reminder.
+If it still does not act, or the model call fails twice, `give_up` hands the ticket to a human, so
+every run ends in a decision.
 """
 
 import json

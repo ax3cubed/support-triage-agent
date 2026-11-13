@@ -32,12 +32,18 @@ flowchart LR
     R --> A[agent<br/>LLM with tools]
     A -- lookup tools --> X[tools]
     X -- results --> A
-    X -- action tool called --> D([decision])
-    X -- "bad call refused,<br/>model told why" --> A
-    A -- no tool call --> G[give_up<br/>hand over with the ticket]
+    X -- action tool called --> C[checks in code<br/>valid fields, has a source,<br/>refund rule, clean the message]
+    C -- passes --> D([decision])
+    C -- "refused,<br/>model told why" --> A
+    C -- "refund rule fires" --> B([hand over to billing<br/>with the draft])
+    A -- "no tool call<br/>(first time)" --> N[nudge<br/>one reminder]
+    N --> A
+    A -- "no tool call again,<br/>or model failed twice" --> G[give_up<br/>hand over with the ticket]
     X -- step limit --> G
     G --> D
 ```
+
+The diagram shows v3 and v4. In v0 to v2 there are no checks in code and no reminder: an action goes straight to the decision, and a model that answers without a tool call goes straight to the hand-over.
 
 | Tool | Kind | What it does |
 |---|---|---|
