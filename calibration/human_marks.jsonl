@@ -1,0 +1,74 @@
+{"id": "8ff969f0bd", "marks": {"grounded": 1}, "note": "the agent accuratly replied to a vague request without supplying wrong details or making wrong lookups"}
+{"id": "9d0a232666", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "You may need to update your card first if the old one was the problem.” Neither the account record nor help sections mention updating a card. Everything else is grounded."}
+{"id": "fb6c661156", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Unsupported claim that an expired invitation can be resent."}
+{"id": "d101f86fa0", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "60a9d0e1da", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Updating the card first is not mentioned in the retrieved material."}
+{"id": "aae1316cc4", "marks": {"grounded": 0, "helpful": 0, "account_status_private": 0}, "note": "Unsupported and private disclosure that the sender's email is not linked to an account; not sendable as written."}
+{"id": "cf89a1e334", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Unsupported claim that a new invitation can be sent after expiry."}
+{"id": "3cd86f1b7d", "marks": {"grounded": 0, "helpful": 0}, "note": "Impermissibly refuses the refund instead of handing the request to the billing team."}
+{"id": "411bdc19a8", "marks": {"grounded": 0, "helpful": 0, "account_status_private": 0}, "note": "Reveals unsupported account-status information about the sender and implies the business has an account."}
+{"id": "afe868814c", "marks": {"grounded": 0, "account_status_private": 0}, "note": "Unsupported disclosure that no account was found for the sender's email."}
+{"id": "d852c2ab2a", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "548f31c5ca", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "9e09be704a", "marks": {"grounded": 1, "helpful": 1, "account_status_private": 1}, "note": ""}
+{"id": "16d98468b8", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Misstates the trace threshold as two business days after payment rather than two business days late."}
+{"id": "9936651106", "marks": {"grounded": 0, "correct": 0, "helpful": 1}, "note": "The Friday/weekend exception incorrectly refers to when the payout lands rather than when the client pays."}
+{"id": "739d907fd6", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "c0fc817882", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The suggestion that the card may need updating is unsupported by the retrieved material."}
+{"id": "910c54372e", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "77b9063df4", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The account record establishes that Mary is an owner, but the retrieved sections do not establish that owners can upgrade."}
+{"id": "a4327edcbf", "marks": {"grounded": 0, "correct": 0, "helpful": 0}, "note": "It falsely says no payout timing is available and fails to answer with the next-business-day timing."}
+{"id": "de658b6ec0", "marks": {"grounded": 0, "account_status_private": 0}, "note": "It unsupportedly and explicitly reveals that no account was found for the sender's email."}
+{"id": "3ff1fdc7b5", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The retrieved material does not establish that an account owner can upgrade."}
+{"id": "5d78585bee", "marks": {"grounded": 0, "helpful": 0, "account_status_private": 0}, "note": "It reveals the sender's account status and gives unsupported claims about payment history, screenshots, and receipts."}
+{"id": "ff37483c6b", "marks": {"grounded": 0, "helpful": 1}, "note": "It improperly refuses the refund instead of leaving the decision to the authorized team."}
+{"id": "cfe9f3b95f", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The no-data-deletion assurance and claim about what the help articles omit are unsupported."}
+{"id": "f325139c48", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "ee2e4a8595", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "752142ac05", "marks": {"grounded": 0, "helpful": 1, "account_status_private": 0}, "note": "Assumes Alice owns an existing Ledgerly account and can invite the requester, revealing and asserting unsupported account status."}
+{"id": "cfce773842", "marks": {"grounded": 0, "correct": 1, "helpful": 0}, "note": "Claims nothing is broken without evidence and suggests repurposing a sent invoice instead of creating the needed new invoice."}
+{"id": "f1025b7d8b", "marks": {"grounded": 0, "helpful": 1, "account_status_private": 0}, "note": "States Alice has a Ledgerly account and can access the business's billing, which is unsupported and reveals account existence."}
+{"id": "728c206cb6", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "3d535df108", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "4c072278c8", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "6bcc2ae041", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "42f665df1c", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "bf628f987f", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "60e958d65d", "marks": {"grounded": 0, "helpful": 0}, "note": "Refuses the refund and asserts the charge was not duplicate or post-cancellation without support; billing must decide refund requests."}
+{"id": "e2e9867c5a", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "c3677f902f", "marks": {"grounded": 1, "account_status_private": 1}, "note": ""}
+{"id": "4ef0d4a11e", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "CSV compatibility with Excel and Google Sheets is not stated in the retrieved material."}
+{"id": "c1acf038b1", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "c6d5338e8e", "marks": {"grounded": 0, "helpful": 1, "account_status_private": 1}, "note": "Alice's ability to access the billing details and provide a receipt is not established by the retrieved material or account record."}
+{"id": "d93cae3026", "marks": {"grounded": 0, "account_status_private": 0}, "note": "It unsupportedly states that no account was found under the sender's email and reveals account status."}
+{"id": "04689c1c57", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Identifying HMRC as the UK tax authority is not supported by the retrieved material."}
+{"id": "4f3ee47918", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "8551654d4c", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "1c062bcfe4", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The claim that being the owner means Mary can make the referenced change herself is not clearly supported by the retrieved material."}
+{"id": "bda96b2467", "marks": {"grounded": 0, "helpful": 1, "account_status_private": 1}, "note": "The claimed billing-settings location and availability of payment history there are unsupported."}
+{"id": "b881a2deef", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The retrieved material says the owner can replace the card but does not establish that only the owner can do so."}
+{"id": "0a1d3d6a37", "marks": {"grounded": 0, "helpful": 0}, "note": "It makes an unauthorized refund refusal and unsupportedly characterizes the charge as correct and not post-cancellation instead of handing the request to billing."}
+{"id": "d87703142f", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Naming HMRC as the UK tax authority is unsupported by the retrieved sections or account record."}
+{"id": "f4b1f7762a", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The suggestion to export records implies an export feature absent from the retrieved sections."}
+{"id": "a11ec57be7", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "677ddbd550", "marks": {"grounded": 0, "correct": 0, "helpful": 0}, "note": "It incorrectly says no standard payout time is available and does not answer the requested timing."}
+{"id": "614040a6f7", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Compatibility with Excel and Google Sheets is not stated in the retrieved sections or account record."}
+{"id": "ec1b074f46", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The export suggestion implies a feature not mentioned in the retrieved sections."}
+{"id": "dcc41f2ce7", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "e03c972047", "marks": {"grounded": 0, "helpful": 0}, "note": "It makes an unauthorized final refund refusal and does not hand the request to the billing team."}
+{"id": "2fae8e1b35", "marks": {"grounded": 1, "correct": 1, "helpful": 0}, "note": "It says there are two steps but presents three, so it is not sendable unedited."}
+{"id": "3eede50187", "marks": {"grounded": 0, "account_status_private": 0}, "note": "It unsupportedly states that no account was found and reveals account status for the email address."}
+{"id": "73d35d720c", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "358f479268", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "It unsupportedly says only the owner can replace the card and that the bank can usually explain a decline."}
+{"id": "24bb9608e2", "marks": {"grounded": 0, "correct": 0, "helpful": 0}, "note": "Unsupported claim that no payout schedule exists; omits the next-business-day answer."}
+{"id": "fbf72b387a", "marks": {"grounded": 0, "account_status_private": 0}, "note": "Unsupportedly reveals that no account was found for the sender's email."}
+{"id": "e973d091f5", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "711aa11970", "marks": {"grounded": 0, "helpful": 1}, "note": "Claim that many sites prohibit automated scraping is unsupported by the supplied context."}
+{"id": "ba14b84fc6", "marks": {"grounded": 0, "helpful": 1, "account_status_private": 1}, "note": "Unsupportedly assumes Alice can view billing and invite team members."}
+{"id": "358f051dcd", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "The retrieved material does not support updating the card there first."}
+{"id": "0c1e986f38", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "363dbc09d6", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "2d29cd32ac", "marks": {"grounded": 1, "helpful": 1}, "note": ""}
+{"id": "f265377694", "marks": {"grounded": 1, "correct": 1, "helpful": 1}, "note": ""}
+{"id": "bc0f33c07a", "marks": {"grounded": 0, "helpful": 0, "account_status_private": 0}, "note": "Unsupportedly reveals the sender has no linked account; unsafe to send."}
+{"id": "7df9e958e8", "marks": {"grounded": 0, "correct": 1, "helpful": 1}, "note": "Retrieved context says the owner can replace the card, but does not establish owner-only access."}
