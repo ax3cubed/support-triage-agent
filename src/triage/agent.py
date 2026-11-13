@@ -87,7 +87,7 @@ ACTION_NAMES = {"send_reply": "reply", "escalate_to_human": "escalate", "ask_cus
 
 # What each agent version can see. In v0 one lookup returns the whole account, charges included.
 # From v1 the lookup returns the basics only and charges need their own, deliberate tool call.
-SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True}
+SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True, "v4": True}
 
 # v3 hardens the agent in code. With this on:
 # - the payment-details guard is the strict one, run before the graph starts and on outgoing messages
@@ -98,7 +98,7 @@ SPLIT_BILLING = {"v0": False, "v1": True, "v2": True, "v3": True}
 # - search matches word roots; an unknown sender gets a neutral lookup message; the account basics
 #   say whether the last payment failed, without amounts
 # - errors and silence end in a hand-over that carries the ticket, not in a lost ticket
-HARDENED = {"v0": False, "v1": False, "v2": False, "v3": True}
+HARDENED = {"v0": False, "v1": False, "v2": False, "v3": True, "v4": True}
 ACTION_CLASSES = {"send_reply": send_reply, "escalate_to_human": escalate_to_human, "ask_customer": ask_customer}
 # Most cautious first: used when the model calls more than one action in a step.
 CAUTION_ORDER = ["escalate_to_human", "ask_customer", "send_reply"]

@@ -495,11 +495,17 @@ Limits of this check:
 - My rule is strict. A more lenient marker would see fewer misses and more false alarms.
 - The judge ran once per message, so I did not measure how often it gives the same mark twice.
 
+## Step 20. Three decisions
+
+- x11 and x22 stay as known failures. Both are well understood. x22 is the cost of the refund rule reading quoted text. x11 is the agent refusing in a reply where my rule says hand over, and confirming that another person is a customer. I would rather show them as they are than patch them in the last days.
+- The VAT cases stay, as UK VAT. They test that the agent refuses to give tax advice, a bug with wrong totals, and a plain how-to.
+- The agent was asked for a priority and never told how to choose one. Agent v4 is v3 plus my test: will this get worse if nobody looks until tomorrow? v3 is unchanged, so the final comparison in Step 17 still stands.
+
 ## Next steps
 
 1. Check the judge. Done, see Step 19. My marks are in `calibration/human_marks.jsonl`.
-2. Decide on urgency: add my rule to the agent's instructions, or change the four labels.
-3. Decide on x11 and x22. Either leave both as known failures, or fix them: for x11, a rule in code for requests about another business; for x22, have the refund rule ignore quoted text.
+2. Run v4 to see what the urgency rule changes: `uv run python -m evals.run --name v4 --agent v4 --repetitions 5`, then `make report RUNS="v3-final v4"`.
+3. Look again at three urgency labels (e02, v05, v07) that my own test would call normal.
 4. Write up `notes.md` and the README results section, share the LangSmith links, and make the recording.
 
 ## Known limits
@@ -519,9 +525,7 @@ These eight are real but too big to fix here. I will list them in the write-up.
 
 Decisions still to make:
 
-- [ ] Urgency: add my rule to the agent's instructions, or change the labels on e02, e09, v05 and v07?
-- [ ] x11 and x22: leave them as known failures, or fix them?
-- [ ] Keep the four VAT cases?
+- [ ] Urgency labels on e02, v05 and v07: keep them urgent, or change them to normal to match my own test?
 
 ## Where the evidence is
 

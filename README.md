@@ -20,7 +20,7 @@ Fill in `ANTHROPIC_API_KEY` and `LANGSMITH_API_KEY` in `.env`, then:
 make test                         # offline tests, no keys needed
 make retrieval                    # retrieval recall, no keys needed
 make demo CASE=e02                # one ticket, printed step by step
-make eval NAME=baseline AGENT=v0  # full evaluation of one agent version (v0 to v3), as a LangSmith experiment
+make eval NAME=baseline AGENT=v0  # full evaluation of one agent version (v0 to v4), as a LangSmith experiment
 make report RUNS="baseline v1"    # before-and-after table and the cases that changed
 ```
 
